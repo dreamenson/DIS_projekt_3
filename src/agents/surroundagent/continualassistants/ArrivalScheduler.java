@@ -40,7 +40,6 @@ public class ArrivalScheduler extends OSPABA.Scheduler
 			case Mc.newOrder:
 				hold(rand.nextValue().doubleValue(), message.createCopy());
 
-//				System.out.println(count++);
 				((MyMessage)message).setOrder(new Order(mySim()));
 				assistantFinished(message);
 				break;
