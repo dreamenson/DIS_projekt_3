@@ -6,6 +6,8 @@ import simulation.*;
 //meta! id="12"
 public class AWManager extends OSPABA.Manager
 {
+	private AgentComponent preparingAgent, cuttingAgent;
+
 	public AWManager(int id, Simulation mySim, Agent myAgent)
 	{
 		super(id, mySim, myAgent);
@@ -22,16 +24,23 @@ public class AWManager extends OSPABA.Manager
 		{
 			petriNet().clear();
 		}
-	}
 
-	//meta! userInfo="Removed from model"
-	public void processReleaseWorkerA(MessageForm message)
-	{
+		preparingAgent = myAgent().findAssistant(Id.preparing);
+		cuttingAgent = myAgent().findAssistant(Id.cutting);
 	}
 
 	//meta! sender="WorkerAgent", id="71", type="Request"
 	public void processPrepareAndCut(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+
+		if (myAgent().isAvailWorker()) {
+			msg.setWorker(myAgent().getAvailWorker());
+			msg.setAddressee(preparingAgent);
+			startContinualAssistant(message);
+		} else {
+			// TODO prior front
+		}
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

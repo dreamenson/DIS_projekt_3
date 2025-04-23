@@ -54,4 +54,16 @@ public class CWAgent extends OSPABA.Agent
 		addOwnMessage(Mc.armourC);
 	}
 	//meta! tag="end"
+
+	public boolean isAvailWorker() {
+		return !availWorkers.isEmpty();
+	}
+
+	public Worker getAvailWorker() {
+		return availWorkers.remove();
+	}
+
+	public void addAvailWorker(Worker worker) {
+		availWorkers.add(worker);
+	}
 }

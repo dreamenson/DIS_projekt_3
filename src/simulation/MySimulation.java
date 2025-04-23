@@ -16,12 +16,12 @@ public class MySimulation extends OSPABA.Simulation
 
 	public MySimulation(int workersA, int workersB, int workersC, int places)
 	{
-		init();
 		workerACnt = workersA;
 		workerBCnt = workersB;
 		workerCCnt = workersC;
 		placeCnt = places;
 		_simEndTime = (double) 249*8*60*60;
+		init();
 	}
 
 	@Override

@@ -1,11 +1,19 @@
 package agents.workeragent;
 
 import OSPABA.*;
+import agents.awagent.AWAgent;
+import agents.bwagent.BWAgent;
+import agents.cwagent.CWAgent;
+import entities.order.ProductType;
 import simulation.*;
 
 //meta! id="6"
 public class WorkerManager extends OSPABA.Manager
 {
+	private AWAgent awAgent;
+	private BWAgent bwAgent;
+	private CWAgent cwAgent;
+
 	public WorkerManager(int id, Simulation mySim, Agent myAgent)
 	{
 		super(id, mySim, myAgent);
@@ -22,26 +30,53 @@ public class WorkerManager extends OSPABA.Manager
 		{
 			petriNet().clear();
 		}
+
+		MySimulation sim = (MySimulation) mySim();
+		awAgent = sim.aWAgent();
+		bwAgent = sim.bWAgent();
+		cwAgent = sim.cWAgent();
 	}
 
 	//meta! sender="AWAgent", id="71", type="Response"
 	public void processPrepareAndCut(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+		msg.setAddressee(cwAgent);
+		msg.setCode(Mc.mordantAndVarnish);
+		request(msg);
 	}
 
 	//meta! sender="CWAgent", id="73", type="Response"
 	public void processMordantAndVarnish(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+		msg.setAddressee(bwAgent);
+		msg.setCode(Mc.assembly);
+		request(msg);
 	}
 
 	//meta! sender="BWAgent", id="72", type="Response"
 	public void processAssembly(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+
+		ProductType type = msg.getProduct().getType();
+		if (type != ProductType.RACK) {
+			msg.setCode(Mc.makeProduct);
+			response(msg);
+		} else {
+			System.out.println("skrina");
+			// TODO armour
+		}
 	}
 
 	//meta! sender="CarpentryAgent", id="70", type="Request"
 	public void processMakeProduct(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+		msg.setAddressee(awAgent);
+		msg.setCode(Mc.prepareAndCut);
+		request(msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
