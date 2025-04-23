@@ -41,4 +41,16 @@ public class Product {
     public boolean isNeedVarnishing() {
         return needVarnishing;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "type=" + type +
+                ", startTime=" + startTime +
+                ", order=" + order +
+                ", place=" + place +
+                ", id=" + id +
+                ", needVarnishing=" + needVarnishing +
+                '}';
+    }
 }

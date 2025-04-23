@@ -1,6 +1,7 @@
 package agents.placeagent;
 
 import OSPABA.*;
+import entities.place.Place;
 import simulation.*;
 
 //meta! id="5"
@@ -27,11 +28,28 @@ public class PlaceManager extends OSPABA.Manager
 	//meta! sender="CarpentryAgent", id="85", type="Notice"
 	public void processReleasePlace(MessageForm message)
 	{
+		Place place = ((MyMessage) message).getPlace();
+
+		if (myAgent().hasMessage()) {
+			MyMessage msg = myAgent().getMessage();
+			msg.setPlace(place);
+			response(msg);
+		} else {
+			myAgent().addFreePlace(place);
+		}
 	}
 
 	//meta! sender="CarpentryAgent", id="31", type="Request"
 	public void processAssignPlace(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+
+		if (myAgent().isFreePlace()) {
+			msg.setPlace(myAgent().getFreePlace());
+			response(msg);
+		} else {
+			myAgent().addMessage(msg);
+		}
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

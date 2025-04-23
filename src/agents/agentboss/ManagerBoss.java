@@ -1,11 +1,15 @@
 package agents.agentboss;
 
 import OSPABA.*;
+import agents.carpentryagent.CarpentryAgent;
+import entities.order.Product;
 import simulation.*;
 
 //meta! id="1"
 public class ManagerBoss extends OSPABA.Manager
 {
+	private CarpentryAgent carpentryAgent;
+
 	public ManagerBoss(int id, Simulation mySim, Agent myAgent)
 	{
 		super(id, mySim, myAgent);
@@ -22,13 +26,17 @@ public class ManagerBoss extends OSPABA.Manager
 		{
 			petriNet().clear();
 		}
+
+		carpentryAgent = ((MySimulation) mySim()).carpentryAgent();
 	}
 
 	//meta! sender="SurroundAgent", id="26", type="Notice"
 	public void processOrderArrive(MessageForm message)
 	{
-		MyMessage msg = (MyMessage) message;
-		System.out.println(msg);
+		message.setAddressee(carpentryAgent);
+		message.setCode(Mc.makeOrder);
+		message.setSender(myAgent());
+		request(message);
 	}
 
 	//meta! sender="CarpentryAgent", id="69", type="Response"

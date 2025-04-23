@@ -6,7 +6,7 @@ public class Place implements Comparable<Place> {
     private final int id;
     private Product product;
 
-    Place(int id) {
+    public Place(int id) {
         this.id = id;
     }
 
@@ -29,5 +29,13 @@ public class Place implements Comparable<Place> {
     @Override
     public int compareTo(Place other) {
         return Integer.compare(this.id, other.id);
+    }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "id=" + id +
+                ", product=" + product +
+                '}';
     }
 }

@@ -36,6 +36,10 @@ public class MyMessage extends OSPABA.MessageForm
 		super.copy(message);
 		MyMessage original = (MyMessage)message;
 		// Copy attributes
+		this.order = original.order;
+		this.worker = original.worker;
+		this.product = original.product;
+		this.place = original.place;
 	}
 
 	public Worker getWorker() {
