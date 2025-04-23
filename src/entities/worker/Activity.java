@@ -8,4 +8,3 @@ public enum Activity {
     ARMOURING,
     ASSEMBLING
 }
-
