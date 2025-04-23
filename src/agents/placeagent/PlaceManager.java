@@ -52,12 +52,12 @@ public class PlaceManager extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.assignPlace:
-			processAssignPlace(message);
-		break;
-
 		case Mc.releasePlace:
 			processReleasePlace(message);
+		break;
+
+		case Mc.assignPlace:
+			processAssignPlace(message);
 		break;
 
 		default:

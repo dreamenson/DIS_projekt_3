@@ -6,9 +6,9 @@ import agents.cwagent.*;
 import OSPABA.Process;
 
 //meta! id="122"
-public class Armouring extends OSPABA.Process
+public class ArmouringC extends OSPABA.Process
 {
-	public Armouring(int id, Simulation mySim, CommonAgent myAgent)
+	public ArmouringC(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
 	}

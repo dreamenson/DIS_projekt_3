@@ -72,28 +72,28 @@ public class WorkerManager extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.armourA:
-			processArmourA(message);
+		case Mc.makeProduct:
+			processMakeProduct(message);
 		break;
 
 		case Mc.assembly:
 			processAssembly(message);
 		break;
 
-		case Mc.makeProduct:
-			processMakeProduct(message);
-		break;
-
-		case Mc.prepareAndCut:
-			processPrepareAndCut(message);
+		case Mc.mordantAndVarnish:
+			processMordantAndVarnish(message);
 		break;
 
 		case Mc.armourC:
 			processArmourC(message);
 		break;
 
-		case Mc.mordantAndVarnish:
-			processMordantAndVarnish(message);
+		case Mc.prepareAndCut:
+			processPrepareAndCut(message);
+		break;
+
+		case Mc.armourA:
+			processArmourA(message);
 		break;
 
 		default:

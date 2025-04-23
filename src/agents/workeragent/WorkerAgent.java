@@ -24,8 +24,8 @@ public class WorkerAgent extends OSPABA.Agent
 	{
 		new WorkerManager(Id.workerManager, mySim(), this);
 		addOwnMessage(Mc.mordantAndVarnish);
-		addOwnMessage(Mc.armourA);
 		addOwnMessage(Mc.assembly);
+		addOwnMessage(Mc.armourA);
 		addOwnMessage(Mc.prepareAndCut);
 		addOwnMessage(Mc.makeProduct);
 		addOwnMessage(Mc.armourC);

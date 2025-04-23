@@ -47,8 +47,8 @@ public class CWManager extends OSPABA.Manager
 	{
 	}
 
-	//meta! sender="Armouring", id="123", type="Finish"
-	public void processFinishArmouring(MessageForm message)
+	//meta! sender="ArmouringC", id="123", type="Finish"
+	public void processFinishArmouringC(MessageForm message)
 	{
 	}
 
@@ -67,29 +67,29 @@ public class CWManager extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
+		case Mc.mordantAndVarnish:
+			processMordantAndVarnish(message);
+		break;
+
 		case Mc.finish:
 			switch (message.sender().id())
 			{
-			case Id.varnishing:
-				processFinishVarnishing(message);
-			break;
-
 			case Id.mordanting:
 				processFinishMordanting(message);
 			break;
 
-			case Id.armouring:
-				processFinishArmouring(message);
+			case Id.armouringC:
+				processFinishArmouringC(message);
+			break;
+
+			case Id.varnishing:
+				processFinishVarnishing(message);
 			break;
 			}
 		break;
 
 		case Mc.armourC:
 			processArmourC(message);
-		break;
-
-		case Mc.mordantAndVarnish:
-			processMordantAndVarnish(message);
 		break;
 
 		default:

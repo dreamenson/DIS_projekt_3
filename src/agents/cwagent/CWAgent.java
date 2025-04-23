@@ -48,7 +48,7 @@ public class CWAgent extends OSPABA.Agent
 	{
 		new CWManager(Id.cWManager, mySim(), this);
 		new Varnishing(Id.varnishing, mySim(), this);
-		new Armouring(Id.armouring, mySim(), this);
+		new ArmouringC(Id.armouringC, mySim(), this);
 		new Mordanting(Id.mordanting, mySim(), this);
 		addOwnMessage(Mc.mordantAndVarnish);
 		addOwnMessage(Mc.armourC);

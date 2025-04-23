@@ -24,9 +24,9 @@ public class AWAgent extends OSPABA.Agent
 	private void init()
 	{
 		new AWManager(Id.aWManager, mySim(), this);
+		new ArmouringA(Id.armouringA, mySim(), this);
 		new Cutting(Id.cutting, mySim(), this);
 		new Preparing(Id.preparing, mySim(), this);
-		new Armouring(Id.armouring, mySim(), this);
 		addOwnMessage(Mc.armourA);
 		addOwnMessage(Mc.prepareAndCut);
 	}

@@ -23,11 +23,11 @@ public class Id extends OSPABA.IdList
 	public static final int cWManager = 108;
 	public static final int cutting = 1003;
 	public static final int preparing = 1004;
-	public static final int armouring = 1005;
+	public static final int armouringA = 1005;
 	public static final int assembling = 1006;
 	public static final int mordanting = 1007;
 	public static final int varnishing = 1008;
-	public static final int armouring = 1009;
+	public static final int armouringC = 1009;
 	public static final int arrivalScheduler = 1001;
 	//meta! tag="end"
 }

@@ -6,9 +6,9 @@ import simulation.*;
 import OSPABA.Process;
 
 //meta! id="109"
-public class Armouring extends OSPABA.Process
+public class ArmouringA extends OSPABA.Process
 {
-	public Armouring(int id, Simulation mySim, CommonAgent myAgent)
+	public ArmouringA(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
 	}

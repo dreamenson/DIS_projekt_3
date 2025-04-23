@@ -57,8 +57,8 @@ public class AWManager extends OSPABA.Manager
 	{
 	}
 
-	//meta! sender="Armouring", id="110", type="Finish"
-	public void processFinishArmouring(MessageForm message)
+	//meta! sender="ArmouringA", id="110", type="Finish"
+	public void processFinishArmouringA(MessageForm message)
 	{
 	}
 
@@ -72,29 +72,29 @@ public class AWManager extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.armourA:
-			processArmourA(message);
-		break;
-
 		case Mc.finish:
 			switch (message.sender().id())
 			{
-			case Id.preparing:
-				processFinishPreparing(message);
-			break;
-
 			case Id.cutting:
 				processFinishCutting(message);
 			break;
 
-			case Id.armouring:
-				processFinishArmouring(message);
+			case Id.preparing:
+				processFinishPreparing(message);
+			break;
+
+			case Id.armouringA:
+				processFinishArmouringA(message);
 			break;
 			}
 		break;
 
 		case Mc.prepareAndCut:
 			processPrepareAndCut(message);
+		break;
+
+		case Mc.armourA:
+			processArmourA(message);
 		break;
 
 		default:

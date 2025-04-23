@@ -27,6 +27,8 @@ public class ManagerBoss extends OSPABA.Manager
 	//meta! sender="SurroundAgent", id="26", type="Notice"
 	public void processOrderArrive(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+		System.out.println(msg);
 	}
 
 	//meta! sender="CarpentryAgent", id="69", type="Response"
@@ -37,9 +39,6 @@ public class ManagerBoss extends OSPABA.Manager
 	//meta! userInfo="Process messages defined in code", id="0"
 	public void processDefault(MessageForm message)
 	{
-		switch (message.code())
-		{
-		}
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -52,12 +51,12 @@ public class ManagerBoss extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.makeOrder:
-			processMakeOrder(message);
-		break;
-
 		case Mc.orderArrive:
 			processOrderArrive(message);
+		break;
+
+		case Mc.makeOrder:
+			processMakeOrder(message);
 		break;
 
 		default:
