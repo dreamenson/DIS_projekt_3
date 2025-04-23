@@ -17,6 +17,11 @@ public class AgentBoss extends OSPABA.Agent
 	{
 		super.prepareReplication();
 		// Setup component for the next replication
+
+		MyMessage msg = new MyMessage(mySim());
+		msg.setAddressee(((MySimulation)mySim()).surroundAgent());
+		msg.setCode(Mc.init);
+		myManager().notice(msg);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

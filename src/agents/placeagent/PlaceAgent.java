@@ -3,6 +3,8 @@ package agents.placeagent;
 import OSPABA.*;
 import simulation.*;
 
+
+
 //meta! id="5"
 public class PlaceAgent extends OSPABA.Agent
 {

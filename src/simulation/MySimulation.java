@@ -1,5 +1,6 @@
 package simulation;
 
+import OSPABA.*;
 import agents.surroundagent.*;
 import agents.bwagent.*;
 import agents.carpentryagent.*;
@@ -11,7 +12,7 @@ import agents.workeragent.*;
 
 public class MySimulation extends OSPABA.Simulation
 {
-	private int workerACnt, workerBCnt, workerCCnt, placeCnt;
+	private final int workerACnt, workerBCnt, workerCCnt, placeCnt;
 
 	public MySimulation(int workersA, int workersB, int workersC, int places)
 	{
@@ -20,13 +21,14 @@ public class MySimulation extends OSPABA.Simulation
 		workerBCnt = workersB;
 		workerCCnt = workersC;
 		placeCnt = places;
+		_simEndTime = (double) 249*8*60*60;
 	}
 
 	@Override
 	public void prepareSimulation()
 	{
 		super.prepareSimulation();
-		// Create global statistcis
+		// Create global statistics
 	}
 
 	@Override

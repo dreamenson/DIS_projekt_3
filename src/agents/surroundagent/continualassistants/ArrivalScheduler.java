@@ -2,11 +2,17 @@ package agents.surroundagent.continualassistants;
 
 import OSPABA.*;
 import agents.surroundagent.*;
+import entities.order.Order;
+import random.IRandomGenerator;
+import random.RandomCreator;
 import simulation.*;
 
 //meta! id="28"
 public class ArrivalScheduler extends OSPABA.Scheduler
 {
+	private static final IRandomGenerator rand = RandomCreator.newExponentialRandom(30*60);
+	private int count = 1;
+
 	public ArrivalScheduler(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
@@ -17,18 +23,29 @@ public class ArrivalScheduler extends OSPABA.Scheduler
 	{
 		super.prepareReplication();
 		// Setup component for the next replication
+		count = 1;
 	}
 
 	//meta! sender="SurroundAgent", id="29", type="Start"
 	public void processStart(MessageForm message)
 	{
+		message.setCode(Mc.newOrder);
+		hold(rand.nextValue().doubleValue(), message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
 	public void processDefault(MessageForm message)
 	{
-		switch (message.code())
-		{
+		switch (message.code()) {
+			case Mc.newOrder:
+				hold(rand.nextValue().doubleValue(), message.createCopy());
+
+//				System.out.println(count++);
+				((MyMessage)message).setOrder(new Order(mySim()));
+				assistantFinished(message);
+				break;
+			default:
+				System.out.println("zle");
 		}
 	}
 

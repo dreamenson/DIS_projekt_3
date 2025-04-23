@@ -21,4 +21,5 @@ public class Mc extends OSPABA.IdList
 	//meta! tag="end"
 
 	// 1..1000 range reserved for user
+	public static final int newOrder = 1;
 }

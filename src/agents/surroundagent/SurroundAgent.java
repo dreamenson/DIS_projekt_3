@@ -11,6 +11,7 @@ public class SurroundAgent extends OSPABA.Agent
 	{
 		super(id, mySim, parent);
 		init();
+		myInit();
 	}
 
 	@Override
@@ -28,4 +29,8 @@ public class SurroundAgent extends OSPABA.Agent
 		addOwnMessage(Mc.init);
 	}
 	//meta! tag="end"
+
+	private void myInit() {
+		addOwnMessage(Mc.newOrder);
+	}
 }

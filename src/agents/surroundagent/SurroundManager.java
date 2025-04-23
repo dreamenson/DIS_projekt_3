@@ -6,10 +6,13 @@ import simulation.*;
 //meta! id="3"
 public class SurroundManager extends OSPABA.Manager
 {
+	private final Agent agentBoss;
+
 	public SurroundManager(int id, Simulation mySim, Agent myAgent)
 	{
 		super(id, mySim, myAgent);
 		init();
+		agentBoss = mySim.boss();
 	}
 
 	@Override
@@ -27,19 +30,22 @@ public class SurroundManager extends OSPABA.Manager
 	//meta! sender="AgentBoss", id="24", type="Notice"
 	public void processInit(MessageForm message)
 	{
+		message.setAddressee(myAgent().findAssistant(Id.arrivalScheduler));
+		startContinualAssistant(message);
 	}
 
 	//meta! sender="ArrivalScheduler", id="29", type="Finish"
 	public void processFinish(MessageForm message)
 	{
+		message.setAddressee(agentBoss);
+		message.setCode(Mc.orderArrive);
+		notice(message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
 	public void processDefault(MessageForm message)
 	{
-		switch (message.code())
-		{
-		}
+		System.out.println("zle");
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
