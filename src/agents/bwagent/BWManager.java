@@ -24,13 +24,8 @@ public class BWManager extends OSPABA.Manager
 		}
 	}
 
-	//meta! sender="WorkerAgent", id="82", type="Notice"
-	public void processReleaseWorkerB(MessageForm message)
-	{
-	}
-
 	//meta! sender="WorkerAgent", id="72", type="Request"
-	public void processGetWorkerB(MessageForm message)
+	public void processAssembly(MessageForm message)
 	{
 	}
 
@@ -40,6 +35,11 @@ public class BWManager extends OSPABA.Manager
 		switch (message.code())
 		{
 		}
+	}
+
+	//meta! sender="Assembling", id="112", type="Finish"
+	public void processFinish(MessageForm message)
+	{
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -52,12 +52,12 @@ public class BWManager extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.getWorkerB:
-			processGetWorkerB(message);
+		case Mc.assembly:
+			processAssembly(message);
 		break;
 
-		case Mc.releaseWorkerB:
-			processReleaseWorkerB(message);
+		case Mc.finish:
+			processFinish(message);
 		break;
 
 		default:

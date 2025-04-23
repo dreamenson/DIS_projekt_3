@@ -1,7 +1,6 @@
 package agents.carpentryagent;
 
 import OSPABA.*;
-import agents.carpentryagent.continualassistants.*;
 import simulation.*;
 
 //meta! id="37"
@@ -24,10 +23,9 @@ public class CarpentryAgent extends OSPABA.Agent
 	private void init()
 	{
 		new CarpentryManager(Id.carpentryManager, mySim(), this);
-		new Scheduler1(Id.scheduler1, mySim(), this);
 		addOwnMessage(Mc.assignPlace);
 		addOwnMessage(Mc.makeOrder);
-		addOwnMessage(Mc.getWorker);
+		addOwnMessage(Mc.makeProduct);
 	}
 	//meta! tag="end"
 }

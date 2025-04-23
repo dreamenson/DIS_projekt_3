@@ -58,12 +58,12 @@ public class SurroundManager extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.finish:
-			processFinish(message);
-		break;
-
 		case Mc.init:
 			processInit(message);
+		break;
+
+		case Mc.finish:
+			processFinish(message);
 		break;
 
 		default:

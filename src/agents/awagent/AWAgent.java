@@ -2,6 +2,7 @@ package agents.awagent;
 
 import OSPABA.*;
 import simulation.*;
+import agents.awagent.continualassistants.*;
 
 //meta! id="12"
 public class AWAgent extends OSPABA.Agent
@@ -23,8 +24,11 @@ public class AWAgent extends OSPABA.Agent
 	private void init()
 	{
 		new AWManager(Id.aWManager, mySim(), this);
-		addOwnMessage(Mc.releaseWorkerA);
-		addOwnMessage(Mc.getWorkerA);
+		new Cutting(Id.cutting, mySim(), this);
+		new Preparing(Id.preparing, mySim(), this);
+		new Armouring(Id.armouring, mySim(), this);
+		addOwnMessage(Mc.armourA);
+		addOwnMessage(Mc.prepareAndCut);
 	}
 	//meta! tag="end"
 }

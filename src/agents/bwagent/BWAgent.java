@@ -1,6 +1,7 @@
 package agents.bwagent;
 
 import OSPABA.*;
+import agents.bwagent.continualassistants.*;
 import simulation.*;
 
 //meta! id="13"
@@ -23,8 +24,8 @@ public class BWAgent extends OSPABA.Agent
 	private void init()
 	{
 		new BWManager(Id.bWManager, mySim(), this);
-		addOwnMessage(Mc.releaseWorkerB);
-		addOwnMessage(Mc.getWorkerB);
+		new Assembling(Id.assembling, mySim(), this);
+		addOwnMessage(Mc.assembly);
 	}
 	//meta! tag="end"
 }

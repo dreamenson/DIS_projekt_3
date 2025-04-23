@@ -24,28 +24,23 @@ public class WorkerManager extends OSPABA.Manager
 		}
 	}
 
-	//meta! sender="CarpentryAgent", id="78", type="Notice"
-	public void processReleaseWorker(MessageForm message)
-	{
-	}
-
 	//meta! sender="AWAgent", id="71", type="Response"
-	public void processGetWorkerA(MessageForm message)
+	public void processPrepareAndCut(MessageForm message)
 	{
 	}
 
 	//meta! sender="CWAgent", id="73", type="Response"
-	public void processGetWorkerC(MessageForm message)
+	public void processMordantAndVarnish(MessageForm message)
 	{
 	}
 
 	//meta! sender="BWAgent", id="72", type="Response"
-	public void processGetWorkerB(MessageForm message)
+	public void processAssembly(MessageForm message)
 	{
 	}
 
 	//meta! sender="CarpentryAgent", id="70", type="Request"
-	public void processGetWorker(MessageForm message)
+	public void processMakeProduct(MessageForm message)
 	{
 	}
 
@@ -55,6 +50,16 @@ public class WorkerManager extends OSPABA.Manager
 		switch (message.code())
 		{
 		}
+	}
+
+	//meta! sender="AWAgent", id="124", type="Response"
+	public void processArmourA(MessageForm message)
+	{
+	}
+
+	//meta! sender="CWAgent", id="125", type="Response"
+	public void processArmourC(MessageForm message)
+	{
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -67,24 +72,28 @@ public class WorkerManager extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.getWorkerC:
-			processGetWorkerC(message);
+		case Mc.armourA:
+			processArmourA(message);
 		break;
 
-		case Mc.getWorkerB:
-			processGetWorkerB(message);
+		case Mc.assembly:
+			processAssembly(message);
 		break;
 
-		case Mc.releaseWorker:
-			processReleaseWorker(message);
+		case Mc.makeProduct:
+			processMakeProduct(message);
 		break;
 
-		case Mc.getWorker:
-			processGetWorker(message);
+		case Mc.prepareAndCut:
+			processPrepareAndCut(message);
 		break;
 
-		case Mc.getWorkerA:
-			processGetWorkerA(message);
+		case Mc.armourC:
+			processArmourC(message);
+		break;
+
+		case Mc.mordantAndVarnish:
+			processMordantAndVarnish(message);
 		break;
 
 		default:

@@ -52,12 +52,12 @@ public class ManagerBoss extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.orderArrive:
-			processOrderArrive(message);
-		break;
-
 		case Mc.makeOrder:
 			processMakeOrder(message);
+		break;
+
+		case Mc.orderArrive:
+			processOrderArrive(message);
 		break;
 
 		default:

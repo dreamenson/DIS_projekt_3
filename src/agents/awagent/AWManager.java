@@ -24,13 +24,13 @@ public class AWManager extends OSPABA.Manager
 		}
 	}
 
-	//meta! sender="WorkerAgent", id="81", type="Notice"
+	//meta! userInfo="Removed from model"
 	public void processReleaseWorkerA(MessageForm message)
 	{
 	}
 
 	//meta! sender="WorkerAgent", id="71", type="Request"
-	public void processGetWorkerA(MessageForm message)
+	public void processPrepareAndCut(MessageForm message)
 	{
 	}
 
@@ -40,6 +40,26 @@ public class AWManager extends OSPABA.Manager
 		switch (message.code())
 		{
 		}
+	}
+
+	//meta! sender="WorkerAgent", id="124", type="Request"
+	public void processArmourA(MessageForm message)
+	{
+	}
+
+	//meta! sender="Preparing", id="108", type="Finish"
+	public void processFinishPreparing(MessageForm message)
+	{
+	}
+
+	//meta! sender="Cutting", id="106", type="Finish"
+	public void processFinishCutting(MessageForm message)
+	{
+	}
+
+	//meta! sender="Armouring", id="110", type="Finish"
+	public void processFinishArmouring(MessageForm message)
+	{
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -52,12 +72,29 @@ public class AWManager extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.releaseWorkerA:
-			processReleaseWorkerA(message);
+		case Mc.armourA:
+			processArmourA(message);
 		break;
 
-		case Mc.getWorkerA:
-			processGetWorkerA(message);
+		case Mc.finish:
+			switch (message.sender().id())
+			{
+			case Id.preparing:
+				processFinishPreparing(message);
+			break;
+
+			case Id.cutting:
+				processFinishCutting(message);
+			break;
+
+			case Id.armouring:
+				processFinishArmouring(message);
+			break;
+			}
+		break;
+
+		case Mc.prepareAndCut:
+			processPrepareAndCut(message);
 		break;
 
 		default:

@@ -23,11 +23,12 @@ public class WorkerAgent extends OSPABA.Agent
 	private void init()
 	{
 		new WorkerManager(Id.workerManager, mySim(), this);
-		addOwnMessage(Mc.releaseWorker);
-		addOwnMessage(Mc.getWorkerA);
-		addOwnMessage(Mc.getWorkerC);
-		addOwnMessage(Mc.getWorkerB);
-		addOwnMessage(Mc.getWorker);
+		addOwnMessage(Mc.mordantAndVarnish);
+		addOwnMessage(Mc.armourA);
+		addOwnMessage(Mc.assembly);
+		addOwnMessage(Mc.prepareAndCut);
+		addOwnMessage(Mc.makeProduct);
+		addOwnMessage(Mc.armourC);
 	}
 	//meta! tag="end"
 }

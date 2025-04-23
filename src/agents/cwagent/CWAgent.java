@@ -4,6 +4,7 @@ import OSPABA.*;
 import entities.worker.Worker;
 import entities.worker.WorkerType;
 import simulation.*;
+import agents.cwagent.continualassistants.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -46,8 +47,11 @@ public class CWAgent extends OSPABA.Agent
 	private void init()
 	{
 		new CWManager(Id.cWManager, mySim(), this);
-		addOwnMessage(Mc.releaseWorkerC);
-		addOwnMessage(Mc.getWorkerC);
+		new Varnishing(Id.varnishing, mySim(), this);
+		new Armouring(Id.armouring, mySim(), this);
+		new Mordanting(Id.mordanting, mySim(), this);
+		addOwnMessage(Mc.mordantAndVarnish);
+		addOwnMessage(Mc.armourC);
 	}
 	//meta! tag="end"
 }

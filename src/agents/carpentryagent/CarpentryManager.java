@@ -34,13 +34,8 @@ public class CarpentryManager extends OSPABA.Manager
 	{
 	}
 
-	//meta! sender="Scheduler1", id="54", type="Finish"
-	public void processFinish(MessageForm message)
-	{
-	}
-
 	//meta! sender="WorkerAgent", id="70", type="Response"
-	public void processGetWorker(MessageForm message)
+	public void processMakeProduct(MessageForm message)
 	{
 	}
 
@@ -62,20 +57,16 @@ public class CarpentryManager extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.finish:
-			processFinish(message);
-		break;
-
 		case Mc.assignPlace:
 			processAssignPlace(message);
 		break;
 
-		case Mc.getWorker:
-			processGetWorker(message);
-		break;
-
 		case Mc.makeOrder:
 			processMakeOrder(message);
+		break;
+
+		case Mc.makeProduct:
+			processMakeProduct(message);
 		break;
 
 		default:

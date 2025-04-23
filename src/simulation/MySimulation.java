@@ -58,11 +58,11 @@ public class MySimulation extends OSPABA.Simulation
 		setAgentBoss(new AgentBoss(Id.agentBoss, this, null));
 		setSurroundAgent(new SurroundAgent(Id.surroundAgent, this, agentBoss()));
 		setCarpentryAgent(new CarpentryAgent(Id.carpentryAgent, this, agentBoss()));
-		setPlaceAgent(new PlaceAgent(Id.placeAgent, this, carpentryAgent()));
 		setWorkerAgent(new WorkerAgent(Id.workerAgent, this, carpentryAgent()));
 		setAWAgent(new AWAgent(Id.aWAgent, this, workerAgent()));
 		setBWAgent(new BWAgent(Id.bWAgent, this, workerAgent()));
 		setCWAgent(new CWAgent(Id.cWAgent, this, workerAgent()));
+		setPlaceAgent(new PlaceAgent(Id.placeAgent, this, carpentryAgent()));
 	}
 
 	private AgentBoss _agentBoss;
@@ -88,14 +88,6 @@ public CarpentryAgent carpentryAgent()
 
 	public void setCarpentryAgent(CarpentryAgent carpentryAgent)
 	{_carpentryAgent = carpentryAgent; }
-
-	private PlaceAgent _placeAgent;
-
-public PlaceAgent placeAgent()
-	{ return _placeAgent; }
-
-	public void setPlaceAgent(PlaceAgent placeAgent)
-	{_placeAgent = placeAgent; }
 
 	private WorkerAgent _workerAgent;
 
@@ -128,6 +120,14 @@ public CWAgent cWAgent()
 
 	public void setCWAgent(CWAgent cWAgent)
 	{_cWAgent = cWAgent; }
+
+	private PlaceAgent _placeAgent;
+
+public PlaceAgent placeAgent()
+	{ return _placeAgent; }
+
+	public void setPlaceAgent(PlaceAgent placeAgent)
+	{_placeAgent = placeAgent; }
 	//meta! tag="end"
 
 

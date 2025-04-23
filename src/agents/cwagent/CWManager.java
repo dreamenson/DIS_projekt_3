@@ -24,13 +24,8 @@ public class CWManager extends OSPABA.Manager
 		}
 	}
 
-	//meta! sender="WorkerAgent", id="83", type="Notice"
-	public void processReleaseWorkerC(MessageForm message)
-	{
-	}
-
 	//meta! sender="WorkerAgent", id="73", type="Request"
-	public void processGetWorkerC(MessageForm message)
+	public void processMordantAndVarnish(MessageForm message)
 	{
 	}
 
@@ -40,6 +35,26 @@ public class CWManager extends OSPABA.Manager
 		switch (message.code())
 		{
 		}
+	}
+
+	//meta! sender="Varnishing", id="121", type="Finish"
+	public void processFinishVarnishing(MessageForm message)
+	{
+	}
+
+	//meta! sender="Mordanting", id="114", type="Finish"
+	public void processFinishMordanting(MessageForm message)
+	{
+	}
+
+	//meta! sender="Armouring", id="123", type="Finish"
+	public void processFinishArmouring(MessageForm message)
+	{
+	}
+
+	//meta! sender="WorkerAgent", id="125", type="Request"
+	public void processArmourC(MessageForm message)
+	{
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -52,12 +67,29 @@ public class CWManager extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.getWorkerC:
-			processGetWorkerC(message);
+		case Mc.finish:
+			switch (message.sender().id())
+			{
+			case Id.varnishing:
+				processFinishVarnishing(message);
+			break;
+
+			case Id.mordanting:
+				processFinishMordanting(message);
+			break;
+
+			case Id.armouring:
+				processFinishArmouring(message);
+			break;
+			}
 		break;
 
-		case Mc.releaseWorkerC:
-			processReleaseWorkerC(message);
+		case Mc.armourC:
+			processArmourC(message);
+		break;
+
+		case Mc.mordantAndVarnish:
+			processMordantAndVarnish(message);
 		break;
 
 		default:
