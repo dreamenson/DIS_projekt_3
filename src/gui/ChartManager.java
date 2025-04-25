@@ -280,128 +280,128 @@ public class ChartManager {
         maxY = Double.MIN_VALUE;
     }
 
-    public void updateFullReps(JoineryEventSimulator simulator) {
-        long rep = simulator.getActualRep();
-        double mean = simulator.getOrderCompletionDurationStatistics().getMean();
-        addDataPoint(rep, mean);
-        replicationLabel1.setText("" + rep);
-        replicationLabel2.setText("" + rep);
-
-        updateStatistics(
-                new Statistics[] {
-                        simulator.getOrderCompletionDurationStatistics(),
-                        simulator.getNewOrdersFIFOStatistics(),
-                        simulator.getOrderCountStatistics(),
-                        simulator.getTableCountStatistics()
-                },
-                productionStatsTable
-        );
-        updateStatistics(
-                new Statistics[] {
-                        simulator.getWorkersAStatistics(),
-                        simulator.getWorkersBStatistics(),
-                        simulator.getWorkersCStatistics()
-                },
-                workerStatsTable
-        );
-        updateWorkers(simulator);
-    }
-
-    private void updateStatistics(Statistics[] stats, JTable table) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        for (int i = 0; i < stats.length; i++) {
-            model.setValueAt(stats[i].getMin(), i, 1);
-            model.setValueAt(stats[i].getMax(), i, 2);
-            model.setValueAt(stats[i].getMean(), i, 3);
-            model.setValueAt(stats[i].getConfidenceInterval(), i, 4);
-        }
-    }
-
-    private void updateWorkers(JoineryEventSimulator simulator) {
-        updateWorkerText(simulator.getWorkersAList(), workerAText);
-        updateWorkerText(simulator.getWorkersBList(), workerBText);
-        updateWorkerText(simulator.getWorkersCList(), workerCText);
-    }
-
-    private void updateWorkerText(List<Worker> workers, JTextArea textArea) {
-        textArea.setText(null);
-        for (Worker worker : workers) {
-            Statistics stat = worker.getWorkRatioStatistics();
-            textArea.append(String.format("%d:  %.4f  - %s%n", worker.getIndex(), stat.getMean(), stat.getConfidenceInterval()));
-        }
-        textArea.setCaretPosition(0);
-    }
-
-    public void updateOneRep(JoineryEventSimulator simulator) {
-        String text = parseTime(simulator.getCurrentTime());
-        simulationTimeLabel.setText(text);
-        simulationTimeLabel2.setText(text);
-        updateWorkersJobs(simulator);
-        updateFIFOs(simulator);
-        updateWorkersWorkRatio(simulator);
-        updateStats(simulator);
-    }
-
-    private void updateStats(JoineryEventSimulator simulator) {
-        orderCountLabel.setText(String.format("%d", simulator.getOrderCount()));
-        finishedCountLabel.setText(String.format("%d", simulator.getProductionCount()));
-        unstartedOrdersLabel.setText(String.format("%.4f", simulator.getNewOrdersFIFORepStatistics().getMean()));
-        durationLabel.setText(String.format("%.4f", simulator.getOrderCompletionDurationRepStatistics().getMean()));
-    }
-
-    private void updateWorkersWorkRatio(JoineryEventSimulator simulator) {
-        updateWorkerWorkRatio(simulator.getWorkersAList(), workerAText2);
-        updateWorkerWorkRatio(simulator.getWorkersBList(), workerBText2);
-        updateWorkerWorkRatio(simulator.getWorkersCList(), workerCText2);
-    }
-
-    private void updateWorkerWorkRatio(List<Worker> workers, JTextArea textArea) {
-        textArea.setText(null);
-        for (Worker worker : workers) {
-            textArea.append(String.format("%d: actual mean %.4f%n", worker.getIndex(), worker.getWorkRatio()));
-        }
-        textArea.setCaretPosition(0);
-    }
-
-    private void updateFIFOs(JoineryEventSimulator simulator) {
-        updateFIFO(simulator.getNewOrdersFIFO(), unstartedText);
-        updateFIFO(simulator.getVarnishingFIFO(), varnishText);
-        updateFIFO(simulator.getAssemblyFIFO(), assemblyText);
-        updateFIFO(simulator.getArmourFIFO(), armourText);
-    }
-
-    private void updateFIFO(Queue<Product> products, JTextArea textArea) {
-        textArea.setText(null);
-        textArea.append(String.format("Size = %d%n -- HEAD --%n", products.size()));
-        for (Product product : products) {
-            textArea.append(parseProduct(product) + "\n");
-        }
-        textArea.setCaretPosition(0);
-    }
-
-    private void updateWorkersJobs(JoineryEventSimulator simulator) {
-        updateWorkerJobText(simulator.getWorkersAList(), workerAText);
-        updateWorkerJobText(simulator.getWorkersBList(), workerBText);
-        updateWorkerJobText(simulator.getWorkersCList(), workerCText);
-    }
-
-    private void updateWorkerJobText(List<Worker> workers, JTextArea textArea) {
-        textArea.setText(null);
-        for (Worker worker : workers) {
-            if (worker.isFree()) {
-                textArea.append(String.format("%d:   -- free --%n", worker.getIndex()));
-            } else {
-                textArea.append(String.format("%d: %s %s%n", worker.getIndex(),
-                        worker.getActivity().toString().toLowerCase(), parseProduct(worker.getProduct())));
-            }
-        }
-        textArea.setCaretPosition(0);
-    }
-
-    private static String parseProduct(Product product) {
-        return String.format("#%d-%s on WP %d", product.getId(), product.getType().name(),
-                product.getPlace() == null ? null : product.getPlace().getId());
-    }
+//    public void updateFullReps(JoineryEventSimulator simulator) {
+//        long rep = simulator.getActualRep();
+//        double mean = simulator.getOrderCompletionDurationStatistics().getMean();
+//        addDataPoint(rep, mean);
+//        replicationLabel1.setText("" + rep);
+//        replicationLabel2.setText("" + rep);
+//
+//        updateStatistics(
+//                new Statistics[] {
+//                        simulator.getOrderCompletionDurationStatistics(),
+//                        simulator.getNewOrdersFIFOStatistics(),
+//                        simulator.getOrderCountStatistics(),
+//                        simulator.getTableCountStatistics()
+//                },
+//                productionStatsTable
+//        );
+//        updateStatistics(
+//                new Statistics[] {
+//                        simulator.getWorkersAStatistics(),
+//                        simulator.getWorkersBStatistics(),
+//                        simulator.getWorkersCStatistics()
+//                },
+//                workerStatsTable
+//        );
+//        updateWorkers(simulator);
+//    }
+//
+//    private void updateStatistics(Statistics[] stats, JTable table) {
+//        DefaultTableModel model = (DefaultTableModel) table.getModel();
+//        for (int i = 0; i < stats.length; i++) {
+//            model.setValueAt(stats[i].getMin(), i, 1);
+//            model.setValueAt(stats[i].getMax(), i, 2);
+//            model.setValueAt(stats[i].getMean(), i, 3);
+//            model.setValueAt(stats[i].getConfidenceInterval(), i, 4);
+//        }
+//    }
+//
+//    private void updateWorkers(JoineryEventSimulator simulator) {
+//        updateWorkerText(simulator.getWorkersAList(), workerAText);
+//        updateWorkerText(simulator.getWorkersBList(), workerBText);
+//        updateWorkerText(simulator.getWorkersCList(), workerCText);
+//    }
+//
+//    private void updateWorkerText(List<Worker> workers, JTextArea textArea) {
+//        textArea.setText(null);
+//        for (Worker worker : workers) {
+//            Statistics stat = worker.getWorkRatioStatistics();
+//            textArea.append(String.format("%d:  %.4f  - %s%n", worker.getIndex(), stat.getMean(), stat.getConfidenceInterval()));
+//        }
+//        textArea.setCaretPosition(0);
+//    }
+//
+//    public void updateOneRep(JoineryEventSimulator simulator) {
+//        String text = parseTime(simulator.getCurrentTime());
+//        simulationTimeLabel.setText(text);
+//        simulationTimeLabel2.setText(text);
+//        updateWorkersJobs(simulator);
+//        updateFIFOs(simulator);
+//        updateWorkersWorkRatio(simulator);
+//        updateStats(simulator);
+//    }
+//
+//    private void updateStats(JoineryEventSimulator simulator) {
+//        orderCountLabel.setText(String.format("%d", simulator.getOrderCount()));
+//        finishedCountLabel.setText(String.format("%d", simulator.getProductionCount()));
+//        unstartedOrdersLabel.setText(String.format("%.4f", simulator.getNewOrdersFIFORepStatistics().getMean()));
+//        durationLabel.setText(String.format("%.4f", simulator.getOrderCompletionDurationRepStatistics().getMean()));
+//    }
+//
+//    private void updateWorkersWorkRatio(JoineryEventSimulator simulator) {
+//        updateWorkerWorkRatio(simulator.getWorkersAList(), workerAText2);
+//        updateWorkerWorkRatio(simulator.getWorkersBList(), workerBText2);
+//        updateWorkerWorkRatio(simulator.getWorkersCList(), workerCText2);
+//    }
+//
+//    private void updateWorkerWorkRatio(List<Worker> workers, JTextArea textArea) {
+//        textArea.setText(null);
+//        for (Worker worker : workers) {
+//            textArea.append(String.format("%d: actual mean %.4f%n", worker.getIndex(), worker.getWorkRatio()));
+//        }
+//        textArea.setCaretPosition(0);
+//    }
+//
+//    private void updateFIFOs(JoineryEventSimulator simulator) {
+//        updateFIFO(simulator.getNewOrdersFIFO(), unstartedText);
+//        updateFIFO(simulator.getVarnishingFIFO(), varnishText);
+//        updateFIFO(simulator.getAssemblyFIFO(), assemblyText);
+//        updateFIFO(simulator.getArmourFIFO(), armourText);
+//    }
+//
+//    private void updateFIFO(Queue<Product> products, JTextArea textArea) {
+//        textArea.setText(null);
+//        textArea.append(String.format("Size = %d%n -- HEAD --%n", products.size()));
+//        for (Product product : products) {
+//            textArea.append(parseProduct(product) + "\n");
+//        }
+//        textArea.setCaretPosition(0);
+//    }
+//
+//    private void updateWorkersJobs(JoineryEventSimulator simulator) {
+//        updateWorkerJobText(simulator.getWorkersAList(), workerAText);
+//        updateWorkerJobText(simulator.getWorkersBList(), workerBText);
+//        updateWorkerJobText(simulator.getWorkersCList(), workerCText);
+//    }
+//
+//    private void updateWorkerJobText(List<Worker> workers, JTextArea textArea) {
+//        textArea.setText(null);
+//        for (Worker worker : workers) {
+//            if (worker.isFree()) {
+//                textArea.append(String.format("%d:   -- free --%n", worker.getIndex()));
+//            } else {
+//                textArea.append(String.format("%d: %s %s%n", worker.getIndex(),
+//                        worker.getActivity().toString().toLowerCase(), parseProduct(worker.getProduct())));
+//            }
+//        }
+//        textArea.setCaretPosition(0);
+//    }
+//
+//    private static String parseProduct(Product product) {
+//        return String.format("#%d-%s on WP %d", product.getId(), product.getType().name(),
+//                product.getPlace() == null ? null : product.getPlace().getId());
+//    }
 
     public static String parseTime(double time) {
         int workDaySeconds = 8*60*60;
