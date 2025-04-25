@@ -52,6 +52,7 @@ public class CarpentryManager extends OSPABA.Manager
 		for (Product product : msg.getOrder().getProducts()) {
 			MyMessage msg1 = (MyMessage) msg.createCopy();
 			msg1.setProduct(product);
+			System.out.println("Make product: " + product);
 			request(msg1);
 		}
 	}

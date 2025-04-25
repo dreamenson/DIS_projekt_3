@@ -57,4 +57,11 @@ public class Order {
     public static void resetID() {
         nextID = 1;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                '}';
+    }
 }

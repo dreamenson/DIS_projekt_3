@@ -2,6 +2,7 @@ package agents.surroundagent;
 
 import OSPABA.*;
 import agents.surroundagent.continualassistants.*;
+import entities.order.Order;
 import simulation.*;
 
 //meta! id="3"
@@ -19,6 +20,8 @@ public class SurroundAgent extends OSPABA.Agent
 	{
 		super.prepareReplication();
 		// Setup component for the next replication
+
+		Order.resetID();
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
