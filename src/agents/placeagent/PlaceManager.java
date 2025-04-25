@@ -33,6 +33,7 @@ public class PlaceManager extends OSPABA.Manager
 		if (myAgent().hasMessage()) {
 			MyMessage msg = myAgent().getMessage();
 			msg.setPlace(place);
+			msg.setPrevTime(mySim().currentTime());
 			response(msg);
 		} else {
 			myAgent().addFreePlace(place);
@@ -46,6 +47,7 @@ public class PlaceManager extends OSPABA.Manager
 
 		if (myAgent().isFreePlace()) {
 			msg.setPlace(myAgent().getFreePlace());
+			msg.setPrevTime(mySim().currentTime());
 			response(msg);
 		} else {
 			myAgent().addMessage(msg);

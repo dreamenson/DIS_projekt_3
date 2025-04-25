@@ -2,15 +2,35 @@ package agents.awagent.continualassistants;
 
 import OSPABA.*;
 import agents.awagent.*;
+import entities.order.Product;
+import entities.order.ProductType;
+import entities.place.Place;
+import entities.worker.Activity;
+import entities.worker.Worker;
+import random.EmpiricalRandom;
+import random.IRandomGenerator;
+import random.RandomCreator;
+import random.Type;
 import simulation.*;
 import OSPABA.Process;
 
 //meta! id="105"
 public class Cutting extends OSPABA.Process
 {
+	private static IRandomGenerator tableCuttingRandom;
+	private static final IRandomGenerator chairCuttingRandom =
+			RandomCreator.newContinuousRandom(12*60, 16*60);
+	private static final IRandomGenerator rackCuttingRandom =
+			RandomCreator.newContinuousRandom(15*60, 80*60);
+
 	public Cutting(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
+
+		EmpiricalRandom emp = RandomCreator.newEmpiricalRandom(Type.CONTINUOUS);
+		RandomCreator.addInterval(emp, 10*60, 25*60, 0.6);
+		RandomCreator.addInterval(emp, 25*60, 50*60, 0.4);
+		tableCuttingRandom = emp;
 	}
 
 	@Override
@@ -23,6 +43,18 @@ public class Cutting extends OSPABA.Process
 	//meta! sender="AWAgent", id="106", type="Start"
 	public void processStart(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+
+		Worker worker = msg.getWorker();
+		Product product = msg.getProduct();
+		Place place = msg.getPlace();
+
+		worker.setBusy(product, Activity.CUTTING);
+		worker.setPlace(place);
+		product.setPlace(place);
+		message.setCode(Mc.cutEnd);
+
+		hold(getHoldTime(product), message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -30,6 +62,9 @@ public class Cutting extends OSPABA.Process
 	{
 		switch (message.code())
 		{
+			case Mc.cutEnd:
+				assistantFinished(message);
+				break;
 		}
 	}
 
@@ -56,4 +91,11 @@ public class Cutting extends OSPABA.Process
 		return (AWAgent)super.myAgent();
 	}
 
+	private double getHoldTime(Product product) {
+        return switch (product.getType()) {
+            case ProductType.TABLE -> tableCuttingRandom.nextValue().doubleValue();
+            case ProductType.CHAIR -> chairCuttingRandom.nextValue().doubleValue();
+            case ProductType.RACK -> rackCuttingRandom.nextValue().doubleValue();
+        };
+	}
 }

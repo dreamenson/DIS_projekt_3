@@ -4,14 +4,17 @@ import OSPABA.*;
 import entities.order.Order;
 import entities.order.Product;
 import entities.place.Place;
+import entities.worker.Activity;
 import entities.worker.Worker;
 
-public class MyMessage extends OSPABA.MessageForm
+public class MyMessage extends OSPABA.MessageForm implements Comparable<MyMessage>
 {
 	private Order order;
 	private Worker worker;
 	private Product product;
 	private Place place;
+	private Activity nextActivity;
+	private double prevTime;
 
 	public MyMessage(Simulation mySim)
 	{
@@ -58,6 +61,14 @@ public class MyMessage extends OSPABA.MessageForm
 		return place;
 	}
 
+	public Activity getNextActivity() {
+		return nextActivity;
+	}
+
+	public double getPrevTime() {
+		return prevTime;
+	}
+
 	public void setOrder(Order order) {
 		this.order = order;
 	}
@@ -72,5 +83,22 @@ public class MyMessage extends OSPABA.MessageForm
 
 	public void setPlace(Place place) {
 		this.place = place;
+	}
+
+	public void setNextActivity(Activity nextActivity) {
+		this.nextActivity = nextActivity;
+	}
+
+	public void setPrevTime(double prevTime) {
+		this.prevTime = prevTime;
+	}
+
+	@Override
+	public int compareTo(MyMessage o) {
+		double thisTime = this.getProduct().getStartTime();
+		double otherTime = o.getProduct().getStartTime();
+		if (thisTime < otherTime) return -1;
+		if (thisTime > otherTime) return 1;
+		return Double.compare(this.getPrevTime(), o.getPrevTime());
 	}
 }

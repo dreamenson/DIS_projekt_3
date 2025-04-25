@@ -6,21 +6,20 @@ import entities.worker.WorkerType;
 import simulation.*;
 import agents.awagent.continualassistants.*;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 //meta! id="12"
 public class AWAgent extends OSPABA.Agent
 {
 	private final List<Worker> workers = new ArrayList<>();
 	private final Queue<Worker> availWorkers = new LinkedList<>();
+	private final PriorityQueue<MyMessage> messages = new PriorityQueue<>();
 
 	public AWAgent(int id, Simulation mySim, Agent parent)
 	{
 		super(id, mySim, parent);
 		init();
+		myInit();
 		initWorkers(((MySimulation)mySim).getWorkerACnt());
 	}
 
@@ -40,6 +39,7 @@ public class AWAgent extends OSPABA.Agent
 			worker.reset();
 			availWorkers.add(worker);
 		}
+		messages.clear();
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -54,6 +54,11 @@ public class AWAgent extends OSPABA.Agent
 	}
 	//meta! tag="end"
 
+	private void myInit() {
+		addOwnMessage(Mc.prepareEnd);
+		addOwnMessage(Mc.cutEnd);
+	}
+
 	public boolean isAvailWorker() {
 		return !availWorkers.isEmpty();
 	}
@@ -64,5 +69,17 @@ public class AWAgent extends OSPABA.Agent
 
 	public void addAvailWorker(Worker worker) {
 		availWorkers.add(worker);
+	}
+
+	public boolean isMessageEmpty() {
+		return messages.isEmpty();
+	}
+
+	public MyMessage getMessage() {
+		return messages.remove();
+	}
+
+	public void addMessage(MyMessage msg) {
+		messages.add(msg);
 	}
 }

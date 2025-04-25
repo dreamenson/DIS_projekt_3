@@ -43,8 +43,6 @@ public class ArrivalScheduler extends OSPABA.Scheduler
 				((MyMessage)message).setOrder(new Order(mySim()));
 				assistantFinished(message);
 				break;
-			default:
-				System.out.println("zle");
 		}
 	}
 

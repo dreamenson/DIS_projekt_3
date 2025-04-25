@@ -20,4 +20,8 @@ public class Mc extends OSPABA.IdList
 
 	// 1..1000 range reserved for user
 	public static final int newOrder = 1;
+	public static final int prepareEnd = 2;
+	public static final int cutEnd = 3;
+	public static final int mordantEnd = 4;
+	public static final int varnishEnd = 5;
 }

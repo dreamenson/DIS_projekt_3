@@ -1,12 +1,14 @@
 package agents.awagent;
 
 import OSPABA.*;
+import entities.worker.Activity;
+import entities.worker.Worker;
 import simulation.*;
 
 //meta! id="12"
 public class AWManager extends OSPABA.Manager
 {
-	private AgentComponent preparingAgent, cuttingAgent;
+	private AgentComponent preparingAgent, cuttingAgent, armouringAgent;
 
 	public AWManager(int id, Simulation mySim, Agent myAgent)
 	{
@@ -27,6 +29,7 @@ public class AWManager extends OSPABA.Manager
 
 		preparingAgent = myAgent().findAssistant(Id.preparing);
 		cuttingAgent = myAgent().findAssistant(Id.cutting);
+		armouringAgent = myAgent().findAssistant(Id.armouringA);
 	}
 
 	//meta! sender="WorkerAgent", id="71", type="Request"
@@ -39,7 +42,8 @@ public class AWManager extends OSPABA.Manager
 			msg.setAddressee(preparingAgent);
 			startContinualAssistant(message);
 		} else {
-			// TODO prior front
+			msg.setNextActivity(Activity.PREPARING);
+			myAgent().addMessage(msg);
 		}
 	}
 
@@ -54,21 +58,59 @@ public class AWManager extends OSPABA.Manager
 	//meta! sender="WorkerAgent", id="124", type="Request"
 	public void processArmourA(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+
+		if (myAgent().isAvailWorker()) {
+			msg.setWorker(myAgent().getAvailWorker());
+			msg.setAddressee(armouringAgent);
+			startContinualAssistant(message);
+		} else {
+			msg.setNextActivity(Activity.ARMOURING);
+			myAgent().addMessage(msg);
+		}
 	}
 
 	//meta! sender="Preparing", id="108", type="Finish"
 	public void processFinishPreparing(MessageForm message)
 	{
+		message.setAddressee(cuttingAgent);
+		startContinualAssistant(message);
 	}
 
 	//meta! sender="Cutting", id="106", type="Finish"
 	public void processFinishCutting(MessageForm message)
 	{
+		workerFinished(message, Mc.prepareAndCut);
+	}
+
+	private void workerFinished(MessageForm message, int code) {
+		MyMessage msg = (MyMessage) message;
+		Worker worker = msg.getWorker();
+		msg.setWorker(null);
+		msg.setPrevTime(mySim().currentTime());
+		msg.setCode(code);
+		response(msg);
+
+		if (!myAgent().isMessageEmpty()) {
+			MyMessage msg1 = myAgent().getMessage();
+			msg1.setWorker(worker);
+			if (msg1.getNextActivity() == Activity.PREPARING) {
+				msg1.setAddressee(cuttingAgent);
+			}
+			else if (msg1.getNextActivity() == Activity.ARMOURING) {
+				msg1.setAddressee(armouringAgent);
+			}
+			startContinualAssistant(msg1);
+		} else {
+			worker.setFree();
+			myAgent().addAvailWorker(worker);
+		}
 	}
 
 	//meta! sender="ArmouringA", id="110", type="Finish"
 	public void processFinishArmouringA(MessageForm message)
 	{
+		workerFinished(message, Mc.armourA);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

@@ -1,11 +1,18 @@
 package agents.workeragent;
 
 import OSPABA.*;
+import random.IRandomGenerator;
+import random.RandomCreator;
 import simulation.*;
 
 //meta! id="6"
 public class WorkerAgent extends OSPABA.Agent
 {
+	private static final IRandomGenerator transferStorageRandom =
+			RandomCreator.newTriangularRandom(60, 480, 120);
+	private static final IRandomGenerator transferPlaceRandom =
+			RandomCreator.newTriangularRandom(120, 500, 150);
+
 	public WorkerAgent(int id, Simulation mySim, Agent parent)
 	{
 		super(id, mySim, parent);
@@ -31,4 +38,12 @@ public class WorkerAgent extends OSPABA.Agent
 		addOwnMessage(Mc.armourC);
 	}
 	//meta! tag="end"
+
+	public static IRandomGenerator getTransferStorageRandom() {
+		return transferStorageRandom;
+	}
+
+	public static IRandomGenerator getTransferPlaceRandom() {
+		return transferPlaceRandom;
+	}
 }

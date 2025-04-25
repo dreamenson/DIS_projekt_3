@@ -43,6 +43,7 @@ public class WorkerManager extends OSPABA.Manager
 		MyMessage msg = (MyMessage) message;
 		msg.setAddressee(cwAgent);
 		msg.setCode(Mc.mordantAndVarnish);
+		System.out.println("Cut end: "+ msg.getProduct() + " prevTime:" + msg.getPrevTime());
 		request(msg);
 	}
 
@@ -52,6 +53,7 @@ public class WorkerManager extends OSPABA.Manager
 		MyMessage msg = (MyMessage) message;
 		msg.setAddressee(bwAgent);
 		msg.setCode(Mc.assembly);
+		System.out.println("Varnish end: "+ msg.getProduct() + " prevTime:" + msg.getPrevTime());
 		request(msg);
 	}
 
@@ -76,6 +78,7 @@ public class WorkerManager extends OSPABA.Manager
 		MyMessage msg = (MyMessage) message;
 		msg.setAddressee(awAgent);
 		msg.setCode(Mc.prepareAndCut);
+		System.out.println("Prepare and cut: "+ msg.getProduct() + ", given place: " + msg.getPlace());
 		request(msg);
 	}
 
