@@ -12,6 +12,8 @@ public class WorkerAgent extends OSPABA.Agent
 			RandomCreator.newTriangularRandom(60, 480, 120);
 	private static final IRandomGenerator transferPlaceRandom =
 			RandomCreator.newTriangularRandom(120, 500, 150);
+	private static final IRandomGenerator rackArmouringRandom =
+			RandomCreator.newContinuousRandom(15*60, 25*60);
 
 	public WorkerAgent(int id, Simulation mySim, Agent parent)
 	{
@@ -45,5 +47,9 @@ public class WorkerAgent extends OSPABA.Agent
 
 	public static IRandomGenerator getTransferPlaceRandom() {
 		return transferPlaceRandom;
+	}
+
+	public static IRandomGenerator getRackArmouringRandom() {
+		return rackArmouringRandom;
 	}
 }

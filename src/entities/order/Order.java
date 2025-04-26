@@ -15,7 +15,9 @@ public class Order {
 
     private final long id;
     private final double startTime;
+    private double endTime;
     private final List<Product> products = new ArrayList<>();
+    private int productCnt;
 
     public Order(Simulation sim) {
         this.startTime = sim.currentTime();
@@ -24,9 +26,9 @@ public class Order {
     }
 
     private void initProducts() {
-        int count = rndCount.nextValue().intValue();
+        productCnt = rndCount.nextValue().intValue();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < productCnt; i++) {
             ProductType type;
             double prob = rndType.nextValue().doubleValue();
             if (prob < 0.5) type = ProductType.TABLE;
@@ -46,12 +48,20 @@ public class Order {
         return startTime;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public double getEndTime() {
+        return endTime;
     }
 
-    public void addProduct(Product product) {
-        products.add(product);
+    public boolean isLastProductDone(Product product) {
+        if (--productCnt == 0) {
+            endTime = product.getEndTime();
+            return true;
+        }
+        return false;
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 
     public static void resetID() {

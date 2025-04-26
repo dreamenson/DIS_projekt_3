@@ -1,6 +1,7 @@
 package simulation;
 
 import OSPABA.*;
+import OSPStat.Stat;
 import agents.surroundagent.*;
 import agents.bwagent.*;
 import agents.carpentryagent.*;
@@ -13,6 +14,7 @@ import agents.workeragent.*;
 public class MySimulation extends OSPABA.Simulation
 {
 	private final int workerACnt, workerBCnt, workerCCnt, placeCnt;
+	private final Stat orderDuration = new Stat();
 
 	public MySimulation(int workersA, int workersB, int workersC, int places)
 	{
@@ -43,6 +45,10 @@ public class MySimulation extends OSPABA.Simulation
 	{
 		// Collect local statistics into global, update UI, etc...
 		super.replicationFinished();
+
+		System.out.println("\n------");
+		System.out.println(_agentBoss.getOrderDurationStat());
+		orderDuration.addSample(_agentBoss.getOrderDurationStat().mean());
 	}
 
 	@Override
@@ -50,6 +56,10 @@ public class MySimulation extends OSPABA.Simulation
 	{
 		// Display simulation results
 		super.simulationFinished();
+		System.out.println("\n\n");
+		System.out.println("Order duration stat:");
+		System.out.println(orderDuration);
+//		System.out.println(orderDuration.confidenceInterval_95().toString());
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

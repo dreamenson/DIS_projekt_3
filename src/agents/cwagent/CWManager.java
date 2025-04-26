@@ -103,6 +103,16 @@ public class CWManager extends OSPABA.Manager
 	//meta! sender="WorkerAgent", id="125", type="Request"
 	public void processArmourC(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+
+		if (myAgent().isAvailWorker()) {
+			msg.setWorker(myAgent().getAvailWorker());
+			msg.setAddressee(armouringAgent);
+			startContinualAssistant(message);
+		} else {
+			msg.setNextActivity(Activity.ARMOURING);
+			response(msg);
+		}
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

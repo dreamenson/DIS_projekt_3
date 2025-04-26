@@ -35,7 +35,6 @@ public class Place implements Comparable<Place> {
     public String toString() {
         return "Place{" +
                 "id=" + id +
-                ", product=" + product +
                 '}';
     }
 }

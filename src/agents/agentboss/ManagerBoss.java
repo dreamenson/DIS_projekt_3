@@ -2,6 +2,7 @@ package agents.agentboss;
 
 import OSPABA.*;
 import agents.carpentryagent.CarpentryAgent;
+import entities.order.Order;
 import entities.order.Product;
 import simulation.*;
 
@@ -42,6 +43,11 @@ public class ManagerBoss extends OSPABA.Manager
 	//meta! sender="CarpentryAgent", id="69", type="Response"
 	public void processMakeOrder(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+
+		Order order = msg.getOrder();
+		myAgent().addOrderDuration(order.getEndTime() - order.getStartTime());
+		System.out.println("Order " + order + " done, duration = " + (order.getEndTime() - order.getStartTime()) / 3600);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

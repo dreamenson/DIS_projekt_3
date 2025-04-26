@@ -57,6 +57,7 @@ public class AWAgent extends OSPABA.Agent
 	private void myInit() {
 		addOwnMessage(Mc.prepareEnd);
 		addOwnMessage(Mc.cutEnd);
+		addOwnMessage(Mc.armourAEnd);
 	}
 
 	public boolean isAvailWorker() {

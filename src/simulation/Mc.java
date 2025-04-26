@@ -24,4 +24,7 @@ public class Mc extends OSPABA.IdList
 	public static final int cutEnd = 3;
 	public static final int mordantEnd = 4;
 	public static final int varnishEnd = 5;
+	public static final int assemblyEnd = 6;
+	public static final int armourCEnd = 7;
+	public static final int armourAEnd = 8;
 }

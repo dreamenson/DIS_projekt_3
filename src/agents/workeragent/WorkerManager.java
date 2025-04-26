@@ -5,6 +5,7 @@ import agents.awagent.AWAgent;
 import agents.bwagent.BWAgent;
 import agents.cwagent.CWAgent;
 import entities.order.ProductType;
+import entities.worker.Activity;
 import simulation.*;
 
 //meta! id="6"
@@ -61,6 +62,7 @@ public class WorkerManager extends OSPABA.Manager
 	public void processAssembly(MessageForm message)
 	{
 		MyMessage msg = (MyMessage) message;
+		System.out.println("Assembly end: "+ msg.getProduct() + " prevTime:" + msg.getPrevTime());
 
 		ProductType type = msg.getProduct().getType();
 		if (type != ProductType.RACK) {
@@ -68,7 +70,9 @@ public class WorkerManager extends OSPABA.Manager
 			response(msg);
 		} else {
 			System.out.println("skrina");
-			// TODO armour
+			msg.setAddressee(cwAgent);
+			msg.setCode(Mc.armourC);
+			request(msg);
 		}
 	}
 
@@ -93,11 +97,25 @@ public class WorkerManager extends OSPABA.Manager
 	//meta! sender="AWAgent", id="124", type="Response"
 	public void processArmourA(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+		msg.setCode(Mc.makeProduct);
+		response(msg);
 	}
 
 	//meta! sender="CWAgent", id="125", type="Response"
 	public void processArmourC(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+
+		if (msg.getNextActivity() == Activity.ARMOURING) {
+			msg.setAddressee(awAgent);
+			msg.setCode(Mc.armourA);
+			System.out.println("need A to armour: " + msg.getProduct());
+			request(msg);
+		} else {
+			msg.setCode(Mc.makeProduct);
+			response(msg);
+		}
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

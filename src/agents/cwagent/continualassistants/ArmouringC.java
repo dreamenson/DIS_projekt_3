@@ -1,6 +1,11 @@
 package agents.cwagent.continualassistants;
 
 import OSPABA.*;
+import agents.workeragent.WorkerAgent;
+import entities.order.Product;
+import entities.worker.Activity;
+import entities.worker.Worker;
+import random.IRandomGenerator;
 import simulation.*;
 import agents.cwagent.*;
 import OSPABA.Process;
@@ -8,9 +13,16 @@ import OSPABA.Process;
 //meta! id="122"
 public class ArmouringC extends OSPABA.Process
 {
+	private static IRandomGenerator rackArmouringRandom;
+	private static IRandomGenerator transferPlaceRandom;
+	private static IRandomGenerator transferStorageRandom;
+
 	public ArmouringC(int id, Simulation mySim, CommonAgent myAgent)
 	{
 		super(id, mySim, myAgent);
+		rackArmouringRandom = WorkerAgent.getRackArmouringRandom();
+		transferPlaceRandom = WorkerAgent.getTransferPlaceRandom();
+		transferStorageRandom = WorkerAgent.getTransferStorageRandom();
 	}
 
 	@Override
@@ -23,6 +35,23 @@ public class ArmouringC extends OSPABA.Process
 	//meta! sender="CWAgent", id="123", type="Start"
 	public void processStart(MessageForm message)
 	{
+		MyMessage msg = (MyMessage) message;
+
+		Worker worker = msg.getWorker();
+		Product product = msg.getProduct();
+
+		worker.setBusy(product, Activity.ARMOURING);
+		message.setCode(Mc.armourCEnd);
+
+		double transferTime = 0;
+		if (worker.getPlace() == null) {
+			transferTime += transferStorageRandom.nextValue().doubleValue();
+		} else if (worker.getPlace() != product.getPlace()) {
+			transferTime += transferPlaceRandom.nextValue().doubleValue();
+		}
+		worker.setPlace(product.getPlace());
+
+		hold(transferTime + rackArmouringRandom.nextValue().doubleValue(), message);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -30,6 +59,9 @@ public class ArmouringC extends OSPABA.Process
 	{
 		switch (message.code())
 		{
+			case Mc.armourCEnd:
+				assistantFinished(message);
+				break;
 		}
 	}
 

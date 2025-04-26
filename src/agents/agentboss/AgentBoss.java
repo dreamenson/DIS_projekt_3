@@ -1,11 +1,14 @@
 package agents.agentboss;
 
 import OSPABA.*;
+import OSPStat.Stat;
 import simulation.*;
 
 //meta! id="1"
 public class AgentBoss extends OSPABA.Agent
 {
+	private final Stat orderDurationStat = new Stat();
+
 	public AgentBoss(int id, Simulation mySim, Agent parent)
 	{
 		super(id, mySim, parent);
@@ -17,6 +20,7 @@ public class AgentBoss extends OSPABA.Agent
 	{
 		super.prepareReplication();
 		// Setup component for the next replication
+		orderDurationStat.clear();
 
 		MyMessage msg = new MyMessage(mySim());
 		msg.setAddressee(((MySimulation)mySim()).surroundAgent());
@@ -32,4 +36,12 @@ public class AgentBoss extends OSPABA.Agent
 		addOwnMessage(Mc.orderArrive);
 	}
 	//meta! tag="end"
+
+	public void addOrderDuration(double duration) {
+		orderDurationStat.addSample(duration / 3600);
+	}
+
+	public Stat getOrderDurationStat() {
+		return orderDurationStat;
+	}
 }

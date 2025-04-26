@@ -5,6 +5,7 @@ import entities.place.Place;
 public class Product {
     private final ProductType type;
     private final double startTime;
+    private double endTime;
     private final Order order;
     private Place place = null;
     private final long id;
@@ -24,6 +25,7 @@ public class Product {
 
     public void setPlace(Place place) {
         this.place = place;
+        place.assignProduct(this);
     }
 
     public Place getPlace() {
@@ -32,6 +34,14 @@ public class Product {
 
     public double getStartTime() {
         return startTime;
+    }
+
+    public void setEndTime(double endTime) {
+        this.endTime = endTime;
+    }
+
+    public double getEndTime() {
+        return endTime;
     }
 
     public long getId() {

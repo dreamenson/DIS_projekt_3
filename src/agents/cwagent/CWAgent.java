@@ -8,7 +8,6 @@ import agents.cwagent.continualassistants.*;
 
 import java.util.*;
 
-
 //meta! id="14"
 public class CWAgent extends OSPABA.Agent
 {
@@ -58,6 +57,7 @@ public class CWAgent extends OSPABA.Agent
 	private void myInit() {
 		addOwnMessage(Mc.mordantEnd);
 		addOwnMessage(Mc.varnishEnd);
+		addOwnMessage(Mc.armourCEnd);
 	}
 
 	public boolean isAvailWorker() {

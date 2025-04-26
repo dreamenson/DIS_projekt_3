@@ -46,7 +46,7 @@ public class Mordanting extends OSPABA.Process
 		Worker worker = msg.getWorker();
 		Product product = msg.getProduct();
 
-		worker.setBusy(msg.getProduct(), Activity.MORDANTING);
+		worker.setBusy(product, Activity.MORDANTING);
 		message.setCode(Mc.mordantEnd);
 
 		double transferTime = 0;

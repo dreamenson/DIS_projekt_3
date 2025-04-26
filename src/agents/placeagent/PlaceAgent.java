@@ -14,7 +14,6 @@ import java.util.Queue;
 public class PlaceAgent extends OSPABA.Agent
 {
 	private final PriorityQueue<Place> freePlaces = new PriorityQueue<>();
-
 	private final Queue<MyMessage> messages = new LinkedList<>();
 
 	public PlaceAgent(int id, Simulation mySim, Agent parent)
@@ -29,6 +28,7 @@ public class PlaceAgent extends OSPABA.Agent
 		super.prepareReplication();
 		// Setup component for the next replication
 		initPlaces();
+		messages.clear();
 	}
 
 	private void initPlaces() {
