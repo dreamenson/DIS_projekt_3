@@ -44,7 +44,6 @@ public class WorkerManager extends OSPABA.Manager
 		MyMessage msg = (MyMessage) message;
 		msg.setAddressee(cwAgent);
 		msg.setCode(Mc.mordantAndVarnish);
-//		System.out.println("Cut end: "+ msg.getProduct() + " prevTime:" + msg.getPrevTime());
 		request(msg);
 	}
 
@@ -54,7 +53,6 @@ public class WorkerManager extends OSPABA.Manager
 		MyMessage msg = (MyMessage) message;
 		msg.setAddressee(bwAgent);
 		msg.setCode(Mc.assembly);
-//		System.out.println("Varnish end: "+ msg.getProduct() + " prevTime:" + msg.getPrevTime());
 		request(msg);
 	}
 
@@ -62,14 +60,12 @@ public class WorkerManager extends OSPABA.Manager
 	public void processAssembly(MessageForm message)
 	{
 		MyMessage msg = (MyMessage) message;
-//		System.out.println("Assembly end: "+ msg.getProduct() + " prevTime:" + msg.getPrevTime());
 
 		ProductType type = msg.getProduct().getType();
 		if (type != ProductType.RACK) {
 			msg.setCode(Mc.makeProduct);
 			response(msg);
 		} else {
-//			System.out.println("skrina");
 			msg.setAddressee(cwAgent);
 			msg.setCode(Mc.armourC);
 			request(msg);
@@ -82,7 +78,6 @@ public class WorkerManager extends OSPABA.Manager
 		MyMessage msg = (MyMessage) message;
 		msg.setAddressee(awAgent);
 		msg.setCode(Mc.prepareAndCut);
-//		System.out.println("Prepare and cut: "+ msg.getProduct() + ", given place: " + msg.getPlace());
 		request(msg);
 	}
 
@@ -110,7 +105,6 @@ public class WorkerManager extends OSPABA.Manager
 		if (msg.getNextActivity() == Activity.ARMOURING) {
 			msg.setAddressee(awAgent);
 			msg.setCode(Mc.armourA);
-//			System.out.println("need A to armour: " + msg.getProduct());
 			request(msg);
 		} else {
 			msg.setCode(Mc.makeProduct);

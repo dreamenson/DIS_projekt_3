@@ -29,6 +29,7 @@ public class PlaceManager extends OSPABA.Manager
 	public void processReleasePlace(MessageForm message)
 	{
 		Place place = ((MyMessage) message).getPlace();
+		place.release();
 
 		if (myAgent().hasMessage()) {
 			MyMessage msg = myAgent().getMessage();

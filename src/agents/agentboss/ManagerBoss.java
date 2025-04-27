@@ -47,7 +47,6 @@ public class ManagerBoss extends OSPABA.Manager
 
 		Order order = msg.getOrder();
 		myAgent().addOrderDuration(order.getEndTime() - order.getStartTime());
-//		System.out.println("Order " + order + " done, duration = " + (order.getEndTime() - order.getStartTime()) / 3600);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
