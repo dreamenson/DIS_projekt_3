@@ -11,6 +11,8 @@ import agents.agentboss.*;
 import agents.cwagent.*;
 import agents.workeragent.*;
 
+import java.util.Arrays;
+
 public class MySimulation extends OSPABA.Simulation
 {
 	private final int workerACnt, workerBCnt, workerCCnt, placeCnt;
@@ -46,8 +48,8 @@ public class MySimulation extends OSPABA.Simulation
 		// Collect local statistics into global, update UI, etc...
 		super.replicationFinished();
 
-		System.out.println("\n------");
-		System.out.println(_agentBoss.getOrderDurationStat());
+//		System.out.println("\n------");
+//		System.out.println(_agentBoss.getOrderDurationStat());
 		orderDuration.addSample(_agentBoss.getOrderDurationStat().mean());
 	}
 
@@ -59,7 +61,7 @@ public class MySimulation extends OSPABA.Simulation
 		System.out.println("\n\n");
 		System.out.println("Order duration stat:");
 		System.out.println(orderDuration);
-//		System.out.println(orderDuration.confidenceInterval_95().toString());
+		System.out.println(Arrays.toString(orderDuration.confidenceInterval_95()));
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

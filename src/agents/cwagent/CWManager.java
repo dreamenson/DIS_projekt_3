@@ -89,7 +89,7 @@ public class CWManager extends OSPABA.Manager
 	public void processFinishMordanting(MessageForm message)
 	{
 		MyMessage msg = (MyMessage) message;
-		System.out.println("Mordant end: "+ msg.getProduct() + " prevTime:" + mySim().currentTime());
+//		System.out.println("Mordant end: "+ msg.getProduct() + " prevTime:" + mySim().currentTime());
 		message.setAddressee(varnishingAgent);
 		startContinualAssistant(message);
 	}

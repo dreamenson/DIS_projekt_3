@@ -76,7 +76,7 @@ public class CarpentryManager extends OSPABA.Manager
 			msg.setCode(Mc.makeOrder);
 			response(msg);
 		}
-		System.out.println("Already made: "+ product + " prevTime:" + msg.getPrevTime());
+//		System.out.println("Already made: "+ product + " prevTime:" + msg.getPrevTime());
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

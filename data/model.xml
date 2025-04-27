@@ -2,35 +2,6 @@
 <ABAsim>
   <Agents>
     <Agent>
-      <SimId>6</SimId>
-      <InternalId>12</InternalId>
-      <Name>AWAgent</Name>
-      <Bounds>830,903,180,180</Bounds>
-      <Reasoner>AWManager</Reasoner>
-      <ReasonerBounds>74,25,32,25</ReasonerBounds>
-      <UsePetriNet>false</UsePetriNet>
-      <Components>
-        <Process>
-          <SimId>1005</SimId>
-          <InternalId>109</InternalId>
-          <Name>ArmouringA</Name>
-          <Bounds>116,82,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1003</SimId>
-          <InternalId>105</InternalId>
-          <Name>Cutting</Name>
-          <Bounds>70,110,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1004</SimId>
-          <InternalId>107</InternalId>
-          <Name>Preparing</Name>
-          <Bounds>16,86,35,18</Bounds>
-        </Process>
-      </Components>
-    </Agent>
-    <Agent>
       <SimId>1</SimId>
       <InternalId>1</InternalId>
       <Name>AgentBoss</Name>
@@ -40,33 +11,13 @@
       <UsePetriNet>false</UsePetriNet>
     </Agent>
     <Agent>
-      <SimId>8</SimId>
-      <InternalId>14</InternalId>
-      <Name>CWAgent</Name>
-      <Bounds>1667,822,180,180</Bounds>
-      <Reasoner>CWManager</Reasoner>
+      <SimId>5</SimId>
+      <InternalId>6</InternalId>
+      <Name>WorkerAgent</Name>
+      <Bounds>1187,548,180,180</Bounds>
+      <Reasoner>WorkerManager</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
-      <Components>
-        <Process>
-          <SimId>1009</SimId>
-          <InternalId>122</InternalId>
-          <Name>ArmouringC</Name>
-          <Bounds>122,82,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1008</SimId>
-          <InternalId>120</InternalId>
-          <Name>Varnishing</Name>
-          <Bounds>71,112,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1007</SimId>
-          <InternalId>113</InternalId>
-          <Name>Mordanting</Name>
-          <Bounds>17,85,35,18</Bounds>
-        </Process>
-      </Components>
     </Agent>
     <Agent>
       <SimId>2</SimId>
@@ -103,6 +54,64 @@
       </Components>
     </Agent>
     <Agent>
+      <SimId>6</SimId>
+      <InternalId>12</InternalId>
+      <Name>AWAgent</Name>
+      <Bounds>830,903,180,180</Bounds>
+      <Reasoner>AWManager</Reasoner>
+      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <UsePetriNet>false</UsePetriNet>
+      <Components>
+        <Process>
+          <SimId>1005</SimId>
+          <InternalId>109</InternalId>
+          <Name>ArmouringA</Name>
+          <Bounds>116,82,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1004</SimId>
+          <InternalId>107</InternalId>
+          <Name>Preparing</Name>
+          <Bounds>16,86,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1003</SimId>
+          <InternalId>105</InternalId>
+          <Name>Cutting</Name>
+          <Bounds>70,110,35,18</Bounds>
+        </Process>
+      </Components>
+    </Agent>
+    <Agent>
+      <SimId>8</SimId>
+      <InternalId>14</InternalId>
+      <Name>CWAgent</Name>
+      <Bounds>1667,822,180,180</Bounds>
+      <Reasoner>CWManager</Reasoner>
+      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <UsePetriNet>false</UsePetriNet>
+      <Components>
+        <Process>
+          <SimId>1009</SimId>
+          <InternalId>122</InternalId>
+          <Name>ArmouringC</Name>
+          <Bounds>122,82,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1007</SimId>
+          <InternalId>113</InternalId>
+          <Name>Mordanting</Name>
+          <Bounds>17,85,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1008</SimId>
+          <InternalId>120</InternalId>
+          <Name>Varnishing</Name>
+          <Bounds>71,112,35,18</Bounds>
+        </Process>
+      </Components>
+    </Agent>
+    <Agent>
       <SimId>3</SimId>
       <InternalId>37</InternalId>
       <Name>CarpentryAgent</Name>
@@ -117,16 +126,7 @@
       <Name>PlaceAgent</Name>
       <Bounds>418,609,180,180</Bounds>
       <Reasoner>PlaceManager</Reasoner>
-      <ReasonerBounds>74,25,32,25</ReasonerBounds>
-      <UsePetriNet>false</UsePetriNet>
-    </Agent>
-    <Agent>
-      <SimId>5</SimId>
-      <InternalId>6</InternalId>
-      <Name>WorkerAgent</Name>
-      <Bounds>1184,548,180,180</Bounds>
-      <Reasoner>WorkerManager</Reasoner>
-      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <ReasonerBounds>74,24,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
     </Agent>
   </Agents>
@@ -310,5 +310,5 @@
       <Destination>14</Destination>
     </Message>
   </Messages>
-  <IID>162</IID>
+  <IID>173</IID>
 </ABAsim>
