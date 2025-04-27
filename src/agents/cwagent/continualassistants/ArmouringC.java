@@ -41,7 +41,7 @@ public class ArmouringC extends OSPABA.Process
 		Product product = msg.getProduct();
 
 		worker.setBusy(product, Activity.ARMOURING);
-		message.setCode(Mc.armourCEnd);
+		msg.setCode(Mc.armourCEnd);
 
 		double transferTime = 0;
 		if (worker.getPlace() == null) {
@@ -51,7 +51,7 @@ public class ArmouringC extends OSPABA.Process
 		}
 		worker.setPlace(product.getPlace());
 
-		hold(transferTime + rackArmouringRandom.nextValue().doubleValue(), message);
+		hold(transferTime + rackArmouringRandom.nextValue().doubleValue(), msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

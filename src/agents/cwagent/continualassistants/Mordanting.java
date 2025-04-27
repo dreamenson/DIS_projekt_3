@@ -47,7 +47,7 @@ public class Mordanting extends OSPABA.Process
 		Product product = msg.getProduct();
 
 		worker.setBusy(product, Activity.MORDANTING);
-		message.setCode(Mc.mordantEnd);
+		msg.setCode(Mc.mordantEnd);
 
 		double transferTime = 0;
 		if (worker.getPlace() == null) {
@@ -57,7 +57,7 @@ public class Mordanting extends OSPABA.Process
 		}
 		worker.setPlace(product.getPlace());
 
-		hold(transferTime + getHoldTime(product), message);
+		hold(transferTime + getHoldTime(product), msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

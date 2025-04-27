@@ -52,9 +52,9 @@ public class Cutting extends OSPABA.Process
 		worker.setBusy(product, Activity.CUTTING);
 		worker.setPlace(place);
 		product.setPlace(place);
-		message.setCode(Mc.cutEnd);
+		msg.setCode(Mc.cutEnd);
 
-		hold(getHoldTime(product), message);
+		hold(getHoldTime(product), msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

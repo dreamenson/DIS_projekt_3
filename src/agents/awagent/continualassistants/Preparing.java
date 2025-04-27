@@ -38,13 +38,13 @@ public class Preparing extends OSPABA.Process
 
 		Worker worker = msg.getWorker();
 		worker.setBusy(msg.getProduct(), Activity.PREPARING);
-		message.setCode(Mc.prepareEnd);
+		msg.setCode(Mc.prepareEnd);
 
 		double time = orderPreparationRandom.nextValue().doubleValue();
 		time += transferStorageRandom.nextValue().doubleValue();
 		time += worker.getPlace() != null ? transferStorageRandom.nextValue().doubleValue() : 0;
 
-		hold(time, message);
+		hold(time, msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

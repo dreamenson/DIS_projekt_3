@@ -47,7 +47,7 @@ public class Assembling extends OSPABA.Process
 		Product product = msg.getProduct();
 
 		worker.setBusy(product, Activity.ASSEMBLING);
-		message.setCode(Mc.assemblyEnd);
+		msg.setCode(Mc.assemblyEnd);
 
 		double transferTime = 0;
 		if (worker.getPlace() == null) {
@@ -57,7 +57,7 @@ public class Assembling extends OSPABA.Process
 		}
 		worker.setPlace(product.getPlace());
 
-		hold(transferTime + getHoldTime(product), message);
+		hold(transferTime + getHoldTime(product), msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
