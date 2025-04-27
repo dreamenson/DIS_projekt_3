@@ -4,10 +4,7 @@ import OSPABA.*;
 import entities.place.Place;
 import simulation.*;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 
 //meta! id="5"
@@ -15,11 +12,13 @@ public class PlaceAgent extends OSPABA.Agent
 {
 	private final PriorityQueue<Place> freePlaces = new PriorityQueue<>();
 	private final Queue<MyMessage> messages = new LinkedList<>();
+	private final List<Place> places = new ArrayList<>();
 
 	public PlaceAgent(int id, Simulation mySim, Agent parent)
 	{
 		super(id, mySim, parent);
 		init();
+		initPlaces();
 	}
 
 	@Override
@@ -27,14 +26,18 @@ public class PlaceAgent extends OSPABA.Agent
 	{
 		super.prepareReplication();
 		// Setup component for the next replication
-		initPlaces();
 		messages.clear();
+		freePlaces.clear();
+		for (Place place : places) {
+			place.release();
+			freePlaces.add(place);
+		}
 	}
 
 	private void initPlaces() {
 		int placeCnt = ((MySimulation) mySim()).getPlaceCnt();
 		for (int i = placeCnt; i > 0; i--) {
-			freePlaces.add(new Place(i));
+			places.add(new Place(i));
 		}
 	}
 
