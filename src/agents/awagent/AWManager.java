@@ -40,7 +40,7 @@ public class AWManager extends OSPABA.Manager
 		if (myAgent().isAvailWorker()) {
 			msg.setWorker(myAgent().getAvailWorker());
 			msg.setAddressee(preparingAgent);
-			startContinualAssistant(message);
+			startContinualAssistant(msg);
 		} else {
 			msg.setNextActivity(Activity.PREPARING);
 			myAgent().addMessage(msg);
@@ -63,7 +63,7 @@ public class AWManager extends OSPABA.Manager
 		if (myAgent().isAvailWorker()) {
 			msg.setWorker(myAgent().getAvailWorker());
 			msg.setAddressee(armouringAgent);
-			startContinualAssistant(message);
+			startContinualAssistant(msg);
 		} else {
 			msg.setNextActivity(Activity.ARMOURING);
 			myAgent().addMessage(msg);
@@ -95,7 +95,7 @@ public class AWManager extends OSPABA.Manager
 			MyMessage msg1 = myAgent().getMessage();
 			msg1.setWorker(worker);
 			if (msg1.getNextActivity() == Activity.PREPARING) {
-				msg1.setAddressee(cuttingAgent);
+				msg1.setAddressee(preparingAgent);
 			}
 			else if (msg1.getNextActivity() == Activity.ARMOURING) {
 				msg1.setAddressee(armouringAgent);

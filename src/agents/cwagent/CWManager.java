@@ -40,7 +40,7 @@ public class CWManager extends OSPABA.Manager
 		if (myAgent().isAvailWorker()) {
 			msg.setWorker(myAgent().getAvailWorker());
 			msg.setAddressee(mordantingAgent);
-			startContinualAssistant(message);
+			startContinualAssistant(msg);
 		} else {
 			msg.setNextActivity(Activity.MORDANTING);
 			myAgent().addMessage(msg);
@@ -88,8 +88,6 @@ public class CWManager extends OSPABA.Manager
 	//meta! sender="Mordanting", id="114", type="Finish"
 	public void processFinishMordanting(MessageForm message)
 	{
-		MyMessage msg = (MyMessage) message;
-//		System.out.println("Mordant end: "+ msg.getProduct() + " prevTime:" + mySim().currentTime());
 		message.setAddressee(varnishingAgent);
 		startContinualAssistant(message);
 	}
@@ -108,7 +106,7 @@ public class CWManager extends OSPABA.Manager
 		if (myAgent().isAvailWorker()) {
 			msg.setWorker(myAgent().getAvailWorker());
 			msg.setAddressee(armouringAgent);
-			startContinualAssistant(message);
+			startContinualAssistant(msg);
 		} else {
 			msg.setNextActivity(Activity.ARMOURING);
 			response(msg);

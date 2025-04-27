@@ -38,7 +38,7 @@ public class BWManager extends OSPABA.Manager
 		if (myAgent().isAvailWorker()) {
 			msg.setWorker(myAgent().getAvailWorker());
 			msg.setAddressee(assemblingAgent);
-			startContinualAssistant(message);
+			startContinualAssistant(msg);
 		} else {
 			msg.setNextActivity(Activity.ASSEMBLING);
 			myAgent().addMessage(msg);
