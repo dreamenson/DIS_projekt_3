@@ -1,45 +1,19 @@
 package agents.awagent;
 
 import OSPABA.*;
-import entities.worker.Worker;
+import agents.GeneralWorkerAgent;
 import entities.worker.WorkerType;
 import simulation.*;
 import agents.awagent.continualassistants.*;
 
-import java.util.*;
-
 //meta! id="12"
-public class AWAgent extends OSPABA.Agent
+public class AWAgent extends GeneralWorkerAgent
 {
-	private final List<Worker> workers = new ArrayList<>();
-	private final Queue<Worker> availWorkers = new LinkedList<>();
-	private final PriorityQueue<MyMessage> messages = new PriorityQueue<>();
-
 	public AWAgent(int id, Simulation mySim, Agent parent)
 	{
-		super(id, mySim, parent);
+		super(id, mySim, parent, ((MySimulation)mySim).getWorkerACnt(), WorkerType.A);
 		init();
 		myInit();
-		initWorkers(((MySimulation)mySim).getWorkerACnt());
-	}
-
-	private void initWorkers(int count) {
-		for(int i = 0; i < count; ++i) {
-			workers.add(new Worker(WorkerType.A, i + 1, mySim()));
-		}
-	}
-
-	@Override
-	public void prepareReplication()
-	{
-		super.prepareReplication();
-		// Setup component for the next replication
-		availWorkers.clear();
-		for(Worker worker : workers) {
-			worker.reset();
-			availWorkers.add(worker);
-		}
-		messages.clear();
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -58,29 +32,5 @@ public class AWAgent extends OSPABA.Agent
 		addOwnMessage(Mc.prepareEnd);
 		addOwnMessage(Mc.cutEnd);
 		addOwnMessage(Mc.armourAEnd);
-	}
-
-	public boolean isAvailWorker() {
-		return !availWorkers.isEmpty();
-	}
-
-	public Worker getAvailWorker() {
-		return availWorkers.remove();
-	}
-
-	public void addAvailWorker(Worker worker) {
-		availWorkers.add(worker);
-	}
-
-	public boolean isMessageEmpty() {
-		return messages.isEmpty();
-	}
-
-	public MyMessage getMessage() {
-		return messages.remove();
-	}
-
-	public void addMessage(MyMessage msg) {
-		messages.add(msg);
 	}
 }

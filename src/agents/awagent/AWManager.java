@@ -102,7 +102,7 @@ public class AWManager extends OSPABA.Manager
 		msg.setCode(code);
 		response(msg);
 
-		if (!myAgent().isMessageEmpty()) {
+		if (myAgent().hasMessage()) {
 			MyMessage msg1 = myAgent().getMessage();
 			msg1.setWorker(worker);
 			if (msg1.getNextActivity() == Activity.PREPARING) {

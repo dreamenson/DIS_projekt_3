@@ -63,7 +63,7 @@ public class BWManager extends OSPABA.Manager
 		msg.setCode(Mc.assembly);
 		response(msg);
 
-		if (!myAgent().isMessageEmpty()) {
+		if (myAgent().hasMessage()) {
 			MyMessage msg1 = myAgent().getMessage();
 			msg1.setWorker(worker);
 			msg1.setAddressee(assemblingAgent);
