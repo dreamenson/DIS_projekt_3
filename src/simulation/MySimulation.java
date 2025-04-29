@@ -17,6 +17,7 @@ public class MySimulation extends OSPABA.Simulation
 {
 	private final int workerACnt, workerBCnt, workerCCnt, placeCnt;
 	private final Stat orderDuration = new Stat();
+	private final Stat unstartedOrders = new Stat();
 
 	public MySimulation(int workersA, int workersB, int workersC, int places)
 	{
@@ -51,6 +52,7 @@ public class MySimulation extends OSPABA.Simulation
 //		System.out.println("\n------");
 //		System.out.println(_agentBoss.getOrderDurationStat());
 		orderDuration.addSample(_agentBoss.getOrderDurationStat().mean());
+		unstartedOrders.addSample(_carpentryAgent.getUnstartedOrdersWStat().mean());
 	}
 
 	@Override
@@ -62,6 +64,9 @@ public class MySimulation extends OSPABA.Simulation
 		System.out.println("Order duration stat:");
 		System.out.println(orderDuration);
 		System.out.println(Arrays.toString(orderDuration.confidenceInterval_95()));
+		System.out.println("Unstarted orders:");
+		System.out.println(unstartedOrders);
+		System.out.println(Arrays.toString(unstartedOrders.confidenceInterval_95()));
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

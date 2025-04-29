@@ -1,6 +1,7 @@
 package agents.awagent;
 
 import OSPABA.*;
+import agents.workeragent.WorkerAgent;
 import entities.worker.Activity;
 import entities.worker.Worker;
 import simulation.*;
@@ -9,6 +10,7 @@ import simulation.*;
 public class AWManager extends OSPABA.Manager
 {
 	private AgentComponent preparingAgent, cuttingAgent, armouringAgent;
+	private WorkerAgent workerAgent;
 
 	public AWManager(int id, Simulation mySim, Agent myAgent)
 	{
@@ -30,6 +32,7 @@ public class AWManager extends OSPABA.Manager
 		preparingAgent = myAgent().findAssistant(Id.preparing);
 		cuttingAgent = myAgent().findAssistant(Id.cutting);
 		armouringAgent = myAgent().findAssistant(Id.armouringA);
+		workerAgent = ((MySimulation) mySim()).workerAgent();
 	}
 
 	//meta! sender="WorkerAgent", id="71", type="Request"
@@ -40,11 +43,19 @@ public class AWManager extends OSPABA.Manager
 		if (myAgent().isAvailWorker()) {
 			msg.setWorker(myAgent().getAvailWorker());
 			msg.setAddressee(preparingAgent);
+			sendProductStarted(msg);
 			startContinualAssistant(msg);
 		} else {
 			msg.setNextActivity(Activity.PREPARING);
 			myAgent().addMessage(msg);
 		}
+	}
+
+	private void sendProductStarted(MyMessage msg) {
+		MyMessage msg1 = (MyMessage) msg.createCopy();
+		msg1.setAddressee(workerAgent);
+		msg1.setCode(Mc.productStarted);
+		notice(msg1);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
@@ -95,6 +106,7 @@ public class AWManager extends OSPABA.Manager
 			MyMessage msg1 = myAgent().getMessage();
 			msg1.setWorker(worker);
 			if (msg1.getNextActivity() == Activity.PREPARING) {
+				sendProductStarted(msg1);
 				msg1.setAddressee(preparingAgent);
 			}
 			else if (msg1.getNextActivity() == Activity.ARMOURING) {

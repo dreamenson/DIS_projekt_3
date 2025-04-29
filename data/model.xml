@@ -5,7 +5,7 @@
       <SimId>1</SimId>
       <InternalId>1</InternalId>
       <Name>AgentBoss</Name>
-      <Bounds>470,-138,180,180</Bounds>
+      <Bounds>524,86,180,180</Bounds>
       <Reasoner>ManagerBoss</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
@@ -14,7 +14,7 @@
       <SimId>5</SimId>
       <InternalId>6</InternalId>
       <Name>WorkerAgent</Name>
-      <Bounds>1187,548,180,180</Bounds>
+      <Bounds>1241,772,180,180</Bounds>
       <Reasoner>WorkerManager</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
@@ -23,7 +23,7 @@
       <SimId>2</SimId>
       <InternalId>3</InternalId>
       <Name>SurroundAgent</Name>
-      <Bounds>94,209,180,180</Bounds>
+      <Bounds>148,433,180,180</Bounds>
       <Reasoner>SurroundManager</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
@@ -37,10 +37,19 @@
       </Components>
     </Agent>
     <Agent>
+      <SimId>3</SimId>
+      <InternalId>37</InternalId>
+      <Name>CarpentryAgent</Name>
+      <Bounds>870,418,180,180</Bounds>
+      <Reasoner>CarpentryManager</Reasoner>
+      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <UsePetriNet>false</UsePetriNet>
+    </Agent>
+    <Agent>
       <SimId>7</SimId>
       <InternalId>13</InternalId>
       <Name>BWAgent</Name>
-      <Bounds>1339,968,180,180</Bounds>
+      <Bounds>1393,1192,180,180</Bounds>
       <Reasoner>BWManager</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
@@ -54,49 +63,23 @@
       </Components>
     </Agent>
     <Agent>
-      <SimId>6</SimId>
-      <InternalId>12</InternalId>
-      <Name>AWAgent</Name>
-      <Bounds>830,903,180,180</Bounds>
-      <Reasoner>AWManager</Reasoner>
-      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <SimId>4</SimId>
+      <InternalId>5</InternalId>
+      <Name>PlaceAgent</Name>
+      <Bounds>472,833,180,180</Bounds>
+      <Reasoner>PlaceManager</Reasoner>
+      <ReasonerBounds>74,24,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
-      <Components>
-        <Process>
-          <SimId>1005</SimId>
-          <InternalId>109</InternalId>
-          <Name>ArmouringA</Name>
-          <Bounds>116,82,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1004</SimId>
-          <InternalId>107</InternalId>
-          <Name>Preparing</Name>
-          <Bounds>16,86,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1003</SimId>
-          <InternalId>105</InternalId>
-          <Name>Cutting</Name>
-          <Bounds>70,110,35,18</Bounds>
-        </Process>
-      </Components>
     </Agent>
     <Agent>
       <SimId>8</SimId>
       <InternalId>14</InternalId>
       <Name>CWAgent</Name>
-      <Bounds>1667,822,180,180</Bounds>
+      <Bounds>1721,1046,180,180</Bounds>
       <Reasoner>CWManager</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
       <Components>
-        <Process>
-          <SimId>1009</SimId>
-          <InternalId>122</InternalId>
-          <Name>ArmouringC</Name>
-          <Bounds>122,82,35,18</Bounds>
-        </Process>
         <Process>
           <SimId>1007</SimId>
           <InternalId>113</InternalId>
@@ -109,25 +92,42 @@
           <Name>Varnishing</Name>
           <Bounds>71,112,35,18</Bounds>
         </Process>
+        <Process>
+          <SimId>1009</SimId>
+          <InternalId>122</InternalId>
+          <Name>ArmouringC</Name>
+          <Bounds>122,82,35,18</Bounds>
+        </Process>
       </Components>
     </Agent>
     <Agent>
-      <SimId>3</SimId>
-      <InternalId>37</InternalId>
-      <Name>CarpentryAgent</Name>
-      <Bounds>816,194,180,180</Bounds>
-      <Reasoner>CarpentryManager</Reasoner>
+      <SimId>6</SimId>
+      <InternalId>12</InternalId>
+      <Name>AWAgent</Name>
+      <Bounds>884,1127,180,180</Bounds>
+      <Reasoner>AWManager</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
-    </Agent>
-    <Agent>
-      <SimId>4</SimId>
-      <InternalId>5</InternalId>
-      <Name>PlaceAgent</Name>
-      <Bounds>418,609,180,180</Bounds>
-      <Reasoner>PlaceManager</Reasoner>
-      <ReasonerBounds>74,24,32,25</ReasonerBounds>
-      <UsePetriNet>false</UsePetriNet>
+      <Components>
+        <Process>
+          <SimId>1003</SimId>
+          <InternalId>105</InternalId>
+          <Name>Cutting</Name>
+          <Bounds>70,110,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1004</SimId>
+          <InternalId>107</InternalId>
+          <Name>Preparing</Name>
+          <Bounds>16,86,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1005</SimId>
+          <InternalId>109</InternalId>
+          <Name>ArmouringA</Name>
+          <Bounds>116,82,35,18</Bounds>
+        </Process>
+      </Components>
     </Agent>
   </Agents>
   <Messages>
@@ -276,6 +276,22 @@
       <Destination>111</Destination>
     </Message>
     <Message>
+      <SimId>1019</SimId>
+      <InternalId>176</InternalId>
+      <Name>productStarted</Name>
+      <Type>Notice</Type>
+      <Source>12</Source>
+      <Destination>6</Destination>
+    </Message>
+    <Message>
+      <SimId>1019</SimId>
+      <InternalId>177</InternalId>
+      <Name>productStarted</Name>
+      <Type>Notice</Type>
+      <Source>6</Source>
+      <Destination>37</Destination>
+    </Message>
+    <Message>
       <InternalId>114</InternalId>
       <Type>StartFinish</Type>
       <Source>14</Source>
@@ -310,5 +326,5 @@
       <Destination>14</Destination>
     </Message>
   </Messages>
-  <IID>173</IID>
+  <IID>179</IID>
 </ABAsim>

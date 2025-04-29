@@ -14,6 +14,7 @@ public class Mc extends OSPABA.IdList
 	public static final int init = 1002;
 	public static final int orderArrive = 1003;
 	public static final int assignPlace = 1005;
+	public static final int productStarted = 1019;
 	public static final int armourA = 1017;
 	public static final int armourC = 1018;
 	//meta! tag="end"

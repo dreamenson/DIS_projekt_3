@@ -47,6 +47,7 @@ public class CarpentryManager extends OSPABA.Manager
 	public void processMakeOrder(MessageForm message)
 	{
 		MyMessage msg = (MyMessage) message;
+		myAgent().addOrder(msg.getOrder());
 		msg.setAddressee(placeAgent);
 		msg.setCode(Mc.assignPlace);
 
@@ -86,6 +87,13 @@ public class CarpentryManager extends OSPABA.Manager
 		}
 	}
 
+	//meta! sender="WorkerAgent", id="177", type="Notice"
+	public void processProductStarted(MessageForm message)
+	{
+		MyMessage msg = (MyMessage) message;
+		myAgent().removeOrder(msg.getOrder());
+	}
+
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	public void init()
 	{
@@ -100,12 +108,16 @@ public class CarpentryManager extends OSPABA.Manager
 			processAssignPlace(message);
 		break;
 
-		case Mc.makeOrder:
-			processMakeOrder(message);
-		break;
-
 		case Mc.makeProduct:
 			processMakeProduct(message);
+		break;
+
+		case Mc.productStarted:
+			processProductStarted(message);
+		break;
+
+		case Mc.makeOrder:
+			processMakeOrder(message);
 		break;
 
 		default:

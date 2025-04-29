@@ -88,8 +88,13 @@ public class CWManager extends OSPABA.Manager
 	//meta! sender="Mordanting", id="114", type="Finish"
 	public void processFinishMordanting(MessageForm message)
 	{
-		message.setAddressee(varnishingAgent);
-		startContinualAssistant(message);
+		MyMessage msg = (MyMessage) message;
+		if (msg.getProduct().isNeedVarnishing()) {
+			message.setAddressee(varnishingAgent);
+			startContinualAssistant(message);
+		} else {
+			workerFinished(message, Mc.mordantAndVarnish);
+		}
 	}
 
 	//meta! sender="ArmouringC", id="123", type="Finish"
