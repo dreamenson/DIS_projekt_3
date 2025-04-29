@@ -1,7 +1,7 @@
 package simulation;
 
-import OSPABA.*;
 import OSPStat.Stat;
+import OSPStat.WStat;
 import agents.surroundagent.*;
 import agents.bwagent.*;
 import agents.carpentryagent.*;
@@ -18,6 +18,10 @@ public class MySimulation extends OSPABA.Simulation
 	private final int workerACnt, workerBCnt, workerCCnt, placeCnt;
 	private final Stat orderDuration = new Stat();
 	private final Stat unstartedOrders = new Stat();
+	private final Stat aWorkRatio = new Stat();
+	private final Stat bWorkRatio = new Stat();
+	private final Stat cWorkRatio = new Stat();
+	private final Stat placeBusyRatio = new Stat();
 
 	public MySimulation(int workersA, int workersB, int workersC, int places)
 	{
@@ -49,10 +53,23 @@ public class MySimulation extends OSPABA.Simulation
 		// Collect local statistics into global, update UI, etc...
 		super.replicationFinished();
 
-//		System.out.println("\n------");
-//		System.out.println(_agentBoss.getOrderDurationStat());
+		// stats
 		orderDuration.addSample(_agentBoss.getOrderDurationStat().mean());
-		unstartedOrders.addSample(_carpentryAgent.getUnstartedOrdersWStat().mean());
+		// wstats
+		updateWStat(unstartedOrders, _carpentryAgent.getUnstartedOrdersWStat());
+		updateWorkerStat();
+		placeBusyRatio.addSample(_placeAgent.getMeanBusyRatio());
+	}
+
+	private void updateWStat(Stat repStat, WStat wStat) {
+		wStat.updateAfterReplication();
+		repStat.addSample(wStat.mean());
+	}
+
+	private void updateWorkerStat() {
+		aWorkRatio.addSample(_aWAgent.getMeanWorkRatio());
+		bWorkRatio.addSample(_bWAgent.getMeanWorkRatio());
+		cWorkRatio.addSample(_cWAgent.getMeanWorkRatio());
 	}
 
 	@Override
@@ -60,13 +77,19 @@ public class MySimulation extends OSPABA.Simulation
 	{
 		// Display simulation results
 		super.simulationFinished();
-		System.out.println("\n\n");
-		System.out.println("Order duration stat:");
-		System.out.println(orderDuration);
-		System.out.println(Arrays.toString(orderDuration.confidenceInterval_95()));
-		System.out.println("Unstarted orders:");
-		System.out.println(unstartedOrders);
-		System.out.println(Arrays.toString(unstartedOrders.confidenceInterval_95()));
+
+		System.out.println("\n------------------");
+		System.out.println(workerACnt+"/"+workerBCnt+"/"+workerCCnt+"/"+placeCnt+" reps: "+replicationCount());
+		printStat(orderDuration, "Order duration");
+		printStat(unstartedOrders, "Unstart orders");
+		printStat(aWorkRatio, "A work ratio");
+		printStat(bWorkRatio, "B work ratio");
+		printStat(cWorkRatio, "C work ratio");
+		printStat(placeBusyRatio, "Place busy ratio");
+	}
+
+	private void printStat(Stat stat, String name) {
+		System.out.println(name + "\t" + stat + "\t" + Arrays.toString(stat.confidenceInterval_95()));
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

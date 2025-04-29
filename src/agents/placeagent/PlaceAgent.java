@@ -2,6 +2,7 @@ package agents.placeagent;
 
 import OSPABA.*;
 import entities.place.Place;
+import entities.worker.Worker;
 import simulation.*;
 
 import java.util.*;
@@ -29,7 +30,7 @@ public class PlaceAgent extends OSPABA.Agent
 		messages.clear();
 		freePlaces.clear();
 		for (Place place : places) {
-			place.release();
+			place.reset();
 			freePlaces.add(place);
 		}
 	}
@@ -37,7 +38,7 @@ public class PlaceAgent extends OSPABA.Agent
 	private void initPlaces() {
 		int placeCnt = ((MySimulation) mySim()).getPlaceCnt();
 		for (int i = placeCnt; i > 0; i--) {
-			places.add(new Place(i));
+			places.add(new Place(i, mySim()));
 		}
 	}
 
@@ -72,5 +73,14 @@ public class PlaceAgent extends OSPABA.Agent
 
 	public void addMessage(MyMessage msg) {
 		messages.add(msg);
+	}
+
+	public double getMeanBusyRatio() {
+		double sum = 0;
+		for (Place place : places) {
+			place.updateAfterReplication();
+			sum += place.getBusyRatio();
+		}
+		return sum / places.size();
 	}
 }

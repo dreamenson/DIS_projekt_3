@@ -11,47 +11,39 @@ public class Worker {
     private final int index;
     private boolean isFree = true;
     private Place place = null;
-//    private final WeightedStatistics workRatio = new WeightedStatistics();
     private final WStat workRatio;
     private final Stat workRatioStatistics = new Stat();
-//    private double lastTime = 0;
-    private final Simulation simulation;
     private Product product;
     private Activity activity;
 
     public Worker(WorkerType type, int index, Simulation simulation) {
         this.type = type;
         this.index = index;
-        this.simulation = simulation;
         product = null;
         activity = null;
         workRatio = new WStat(simulation);
     }
 
     public void setBusy(Product product, Activity activity) {
-        addValueToStatistic(isFree ? 0 : 1);
+        addValueToStatistic(1);
         isFree = false;
-//        lastTime = simulation.getCurrentTime();
         this.product = product;
         this.activity = activity;
     }
 
     public void setFree() {
-        addValueToStatistic(isFree ? 0 : 1);
+        addValueToStatistic(0);
         isFree = true;
-//        lastTime = simulation.getCurrentTime();
         product = null;
         activity = null;
     }
 
     private void addValueToStatistic(double value) {
-//        double weight = simulation.getCurrentTime() - lastTime;
-//        workRatio.addValue(value, weight);
         workRatio.addSample(value);
     }
 
-    public void setLastInterval() {
-        addValueToStatistic(isFree ? 0 : 1);
+    public void updateAfterReplication() {
+        workRatio.updateAfterReplication();
     }
 
     public Place getPlace() {
@@ -98,7 +90,6 @@ public class Worker {
         isFree = true;
         place = null;
         workRatio.clear();
-//        lastTime = 0;
         product = null;
         activity = null;
     }
