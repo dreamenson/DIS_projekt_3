@@ -34,6 +34,7 @@ public class ManagerBoss extends OSPABA.Manager
 	//meta! sender="SurroundAgent", id="26", type="Notice"
 	public void processOrderArrive(MessageForm message)
 	{
+		myAgent().addOrder();
 		message.setAddressee(carpentryAgent);
 		message.setCode(Mc.makeOrder);
 		message.setSender(myAgent());
@@ -46,6 +47,7 @@ public class ManagerBoss extends OSPABA.Manager
 		MyMessage msg = (MyMessage) message;
 
 		Order order = msg.getOrder();
+		myAgent().addFinishedOrder();
 		myAgent().addOrderDuration(order.getEndTime() - order.getStartTime());
 	}
 

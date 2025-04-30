@@ -44,6 +44,7 @@ public class Worker {
 
     public void updateAfterReplication() {
         workRatio.updateAfterReplication();
+        workRatioStatistics.addSample(workRatio.mean());
     }
 
     public Place getPlace() {
@@ -76,10 +77,6 @@ public class Worker {
 
     public boolean isFree() {
         return isFree;
-    }
-
-    public void updateStatistics() {
-        workRatioStatistics.addSample(workRatio.mean());
     }
 
     public Stat getWorkRatioStatistics() {

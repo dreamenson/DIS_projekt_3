@@ -1,20 +1,18 @@
 package gui;
 
-//import core.statistics.Statistics;
-//import joinery.JoineryEventSimulator;
-//import joinery.product.Product;
-//import joinery.worker.Worker;
+import OSPStat.Stat;
+import entities.worker.Worker;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import simulation.MySimulation;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
-import java.util.Queue;
 
 public class ChartManager {
     private final JTabbedPane jTabbedPane;
@@ -189,7 +187,7 @@ public class ChartManager {
                 {"Production Time [h]", "N/A", "N/A", "N/A", "N/A"},
                 {"Unstarted Orders [qty]", "N/A", "N/A", "N/A", "N/A"},
                 {"Total Orders [#]", "N/A", "N/A", "N/A", "N/A"},
-                {"Workplaces [#]", "N/A", "N/A", "N/A", "N/A"}
+                {"Finished Orders [#]", "N/A", "N/A", "N/A", "N/A"}
         };
         productionStatsTable = new JTable(new DefaultTableModel(data, columnNames));
         JScrollPane statsScrollPane = new JScrollPane(productionStatsTable);
@@ -235,7 +233,7 @@ public class ChartManager {
         workerTextPanel.add(workerBScroll);
         workerTextPanel.add(workerCScroll);
 
-        workerTextPanel.setPreferredSize(new Dimension(1000, 500));
+        workerTextPanel.setPreferredSize(new Dimension(1000, 480));
         workersPanel.add(workerTextPanel, BorderLayout.SOUTH);
 
         jTabbedPane.addTab("Workers", workersPanel);
@@ -280,57 +278,69 @@ public class ChartManager {
         maxY = Double.MIN_VALUE;
     }
 
-//    public void updateFullReps(JoineryEventSimulator simulator) {
-//        long rep = simulator.getActualRep();
-//        double mean = simulator.getOrderCompletionDurationStatistics().getMean();
-//        addDataPoint(rep, mean);
-//        replicationLabel1.setText("" + rep);
-//        replicationLabel2.setText("" + rep);
-//
-//        updateStatistics(
-//                new Statistics[] {
-//                        simulator.getOrderCompletionDurationStatistics(),
-//                        simulator.getNewOrdersFIFOStatistics(),
-//                        simulator.getOrderCountStatistics(),
-//                        simulator.getTableCountStatistics()
-//                },
-//                productionStatsTable
-//        );
-//        updateStatistics(
-//                new Statistics[] {
-//                        simulator.getWorkersAStatistics(),
-//                        simulator.getWorkersBStatistics(),
-//                        simulator.getWorkersCStatistics()
-//                },
-//                workerStatsTable
-//        );
-//        updateWorkers(simulator);
-//    }
-//
-//    private void updateStatistics(Statistics[] stats, JTable table) {
-//        DefaultTableModel model = (DefaultTableModel) table.getModel();
-//        for (int i = 0; i < stats.length; i++) {
-//            model.setValueAt(stats[i].getMin(), i, 1);
-//            model.setValueAt(stats[i].getMax(), i, 2);
-//            model.setValueAt(stats[i].getMean(), i, 3);
-//            model.setValueAt(stats[i].getConfidenceInterval(), i, 4);
-//        }
-//    }
-//
-//    private void updateWorkers(JoineryEventSimulator simulator) {
-//        updateWorkerText(simulator.getWorkersAList(), workerAText);
-//        updateWorkerText(simulator.getWorkersBList(), workerBText);
-//        updateWorkerText(simulator.getWorkersCList(), workerCText);
-//    }
-//
-//    private void updateWorkerText(List<Worker> workers, JTextArea textArea) {
-//        textArea.setText(null);
-//        for (Worker worker : workers) {
-//            Statistics stat = worker.getWorkRatioStatistics();
-//            textArea.append(String.format("%d:  %.4f  - %s%n", worker.getIndex(), stat.getMean(), stat.getConfidenceInterval()));
-//        }
-//        textArea.setCaretPosition(0);
-//    }
+    public void updateFullReps(MySimulation simulator) {
+        int rep = simulator.currentReplication() + 1;
+        double mean = simulator.getOrderDuration().mean();
+        addDataPoint(rep, mean);
+        replicationLabel1.setText("" + rep);
+        replicationLabel2.setText("" + rep);
+
+        updateStatistics(
+                new Stat[] {
+                        simulator.getOrderDuration(),
+                        simulator.getUnstartedOrders(),
+                        simulator.getOrderCount(),
+                        simulator.getOrderFinishedCount()
+                },
+                productionStatsTable
+        );
+        updateStatistics(
+                new Stat[] {
+                        simulator.getaWorkRatio(),
+                        simulator.getbWorkRatio(),
+                        simulator.getcWorkRatio()
+                },
+                workerStatsTable
+        );
+        updateWorkers(simulator);
+    }
+
+    private void updateStatistics(Stat[] stats, JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        for (int i = 0; i < stats.length; i++) {
+            model.setValueAt(stats[i].min(), i, 1);
+            model.setValueAt(stats[i].max(), i, 2);
+            model.setValueAt(stats[i].mean(), i, 3);
+            model.setValueAt(formatConfInt(stats[i].confidenceInterval_95()), i, 4);
+        }
+    }
+
+    private void updateWorkers(MySimulation simulator) {
+        updateWorkerText(simulator.aWAgent().getWorkers(), workerAText);
+        updateWorkerText(simulator.bWAgent().getWorkers(), workerBText);
+        updateWorkerText(simulator.cWAgent().getWorkers(), workerCText);
+    }
+
+    private static String formatConfInt(double[] data) {
+        StringBuilder sb = new StringBuilder("<");
+        for (int i = 0; i < data.length; i++) {
+            sb.append(String.format("%.4f", data[i]));
+            if (i < data.length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append(">");
+        return sb.toString();
+    }
+
+    private void updateWorkerText(List<Worker> workers, JTextArea textArea) {
+        textArea.setText(null);
+        for (Worker worker : workers) {
+            Stat stat = worker.getWorkRatioStatistics();
+            textArea.append(String.format("%d:  %.4f  - %s%n", worker.getIndex(), stat.mean(), formatConfInt(stat.confidenceInterval_95())));
+        }
+        textArea.setCaretPosition(0);
+    }
 //
 //    public void updateOneRep(JoineryEventSimulator simulator) {
 //        String text = parseTime(simulator.getCurrentTime());

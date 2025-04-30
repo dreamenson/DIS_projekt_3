@@ -19,6 +19,9 @@ public class MySimulation extends OSPABA.Simulation
 	private final int workerACnt, workerBCnt, workerCCnt, placeCnt;
 	private final Stat orderDuration = new Stat();
 	private final Stat unstartedOrders = new Stat();
+	private final Stat orderCount = new Stat();
+	private final Stat orderFinishedCount = new Stat();
+
 	private final Stat aWorkRatio = new Stat();
 	private final Stat bWorkRatio = new Stat();
 	private final Stat cWorkRatio = new Stat();
@@ -57,6 +60,8 @@ public class MySimulation extends OSPABA.Simulation
 
 		// stats
 		orderDuration.addSample(_agentBoss.getOrderDurationStat().mean());
+		orderCount.addSample(_agentBoss.getOrderCount());
+		orderFinishedCount.addSample(_agentBoss.getOrderFinishedCount());
 		// wstats
 		updateWStat(unstartedOrders, _carpentryAgent.getUnstartedOrdersWStat());
 		updateWorkerStat();
@@ -187,5 +192,37 @@ public PlaceAgent placeAgent()
 
 	public int getPlaceCnt() {
 		return placeCnt;
+	}
+
+	public Stat getOrderDuration() {
+		return orderDuration;
+	}
+
+	public Stat getUnstartedOrders() {
+		return unstartedOrders;
+	}
+
+	public Stat getaWorkRatio() {
+		return aWorkRatio;
+	}
+
+	public Stat getbWorkRatio() {
+		return bWorkRatio;
+	}
+
+	public Stat getcWorkRatio() {
+		return cWorkRatio;
+	}
+
+	public Stat getPlaceBusyRatio() {
+		return placeBusyRatio;
+	}
+
+	public Stat getOrderCount() {
+		return orderCount;
+	}
+
+	public Stat getOrderFinishedCount() {
+		return orderFinishedCount;
 	}
 }

@@ -3,9 +3,9 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
-public class EventSimulationGUI {
+public class SimulationGUI {
     private final JFrame frame;
-    private final JTextField workersAInput, workersBInput, workersCInput;
+    private final JTextField workersAInput, workersBInput, workersCInput, placeCntInput;
     private final JTextField replicationsInput, stepSizeInput, skipValueInput;
     private final JButton startButton, pauseButton, stopButton;
     private final JSlider speedSlider;
@@ -13,20 +13,21 @@ public class EventSimulationGUI {
     private SimulationWorker simulationWorker;
     private boolean isPaused = false;
 
-    public EventSimulationGUI() {
-        frame = new JFrame("Joinery Event Simulation GUI");
+    public SimulationGUI() {
+        frame = new JFrame("Carpentry Simulation GUI");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 800);
         frame.setLayout(new BorderLayout());
 
         // Control Panel
-        JPanel controlPanel = new JPanel(new GridLayout(3, 2, 5, 5));
+        JPanel controlPanel = new JPanel(new GridLayout(4, 2, 5, 5));
         controlPanel.setBorder(BorderFactory.createTitledBorder("Simulation Inputs"));
-        workersAInput = new JTextField("2", 5);
-        workersBInput = new JTextField("2", 5);
-        workersCInput = new JTextField("18", 5);
-        replicationsInput = new JTextField("1000", 5);
-        stepSizeInput = new JTextField("10", 5);
+        workersAInput = new JTextField("6", 5);
+        workersBInput = new JTextField("5", 5);
+        workersCInput = new JTextField("38", 5);
+        placeCntInput = new JTextField("57", 5);
+        replicationsInput = new JTextField("500", 5);
+        stepSizeInput = new JTextField("2", 5);
         skipValueInput = new JTextField("0.3", 5);
         controlPanel.add(new JLabel("Workers A:")); controlPanel.add(workersAInput);
         controlPanel.add(new JLabel("Replications:")); controlPanel.add(replicationsInput);
@@ -34,6 +35,7 @@ public class EventSimulationGUI {
         controlPanel.add(new JLabel("Step Size:")); controlPanel.add(stepSizeInput);
         controlPanel.add(new JLabel("Workers C:")); controlPanel.add(workersCInput);
         controlPanel.add(new JLabel("Skip Value:")); controlPanel.add(skipValueInput);
+        controlPanel.add(new JLabel("Place count:")); controlPanel.add(placeCntInput);
 
         // Button Panel
         JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -70,24 +72,24 @@ public class EventSimulationGUI {
     }
 
     private void startSimulation() {
-        long reps = Long.parseLong(replicationsInput.getText());
-        long stepSize = Long.parseLong(stepSizeInput.getText());
+        int reps = Integer.parseInt(replicationsInput.getText());
+        int stepSize = Integer.parseInt(stepSizeInput.getText());
         double skipValue = Double.parseDouble(skipValueInput.getText());
         int workersA = Integer.parseInt(workersAInput.getText());
         int workersB = Integer.parseInt(workersBInput.getText());
         int workersC = Integer.parseInt(workersCInput.getText());
+        int placeCnt = Integer.parseInt(placeCntInput.getText());
 
         startButton.setEnabled(false);
         stopButton.setEnabled(true);
         pauseButton.setEnabled(true);
 
-        simulationWorker = new SimulationWorker(reps, stepSize, skipValue, workersA, workersB, workersC, chartManager) {
+        simulationWorker = new SimulationWorker(reps, stepSize, skipValue, workersA, workersB, workersC, placeCnt,chartManager) {
             @Override
             protected void done() {
                 startButton.setEnabled(true);
                 stopButton.setEnabled(false);
                 pauseButton.setEnabled(false);
-                System.out.println("--------------------------------------------\n");
             }
         };
         simulationWorker.execute();
@@ -104,7 +106,11 @@ public class EventSimulationGUI {
 
     private void pauseSimulation() {
         if (simulationWorker != null) {
-            simulationWorker.changePause();
+            if (!isPaused) {
+                simulationWorker.pause();
+            } else {
+                simulationWorker.resume();
+            }
         }
         isPaused = !isPaused;
         pauseButton.setText(isPaused ? "Resume" : "Pause");

@@ -1,23 +1,28 @@
 package gui;
 
-import javax.swing.*;
-import java.lang.reflect.InvocationTargetException;
+import OSPABA.ISimDelegate;
+import OSPABA.SimState;
+import OSPABA.Simulation;
+import simulation.MySimulation;
 
-public class SimulationWorker extends SwingWorker<Void, Double> {
-    private final long reps, stepSize;
-    private final int workersA, workersB, workersC;
+import javax.swing.*;
+
+public class SimulationWorker extends SwingWorker<Void, Double> implements ISimDelegate {
+    private final int reps, stepSize;
+    private final int workersA, workersB, workersC, placeCnt;
     private final double skipValue;
     private final ChartManager chartManager;
     private boolean mode, isStopped;
-//    private JoineryEventSimulator simulator;
+    private MySimulation simulation;
 
-    public SimulationWorker(long reps, long stepSize, double skipValue, int workersA, int workersB, int workersC, ChartManager chartManager) {
+    public SimulationWorker(int reps, int stepSize, double skipValue, int workersA, int workersB, int workersC, int placeCnt,ChartManager chartManager) {
         this.reps = reps;
         this.stepSize = stepSize;
         this.skipValue = skipValue;
         this.workersA = workersA;
         this.workersB = workersB;
         this.workersC = workersC;
+        this.placeCnt = placeCnt;
         this.chartManager = chartManager;
     }
 
@@ -30,34 +35,48 @@ public class SimulationWorker extends SwingWorker<Void, Double> {
         if (mode) chartManager.setSingleReplicationChart();
         else chartManager.setFullReplicationsChart();
 
-//        try {
-//            simulator = new JoineryEventSimulator(workersA, workersB, workersC);
-//            simulator.attach(this);
-//            simulator.run(reps);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            simulation = new MySimulation(workersA, workersB, workersC, placeCnt);
+            simulation.registerDelegate(this);
+            simulation.simulate(reps);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
     public void stop() {
         isStopped = true;
-//        simulator.stop();
+        simulation.stopSimulation();
     }
 
-    public void changePause() {
-//        simulator.changePause();
+    public void pause() {
+        simulation.pauseSimulation();
+    }
+
+    public void resume() {
+        simulation.resumeSimulation();
     }
 
     public void setSpeed(int speed) {
 //        simulator.setSpeed(speed);
     }
 
-//    @Override
-//    public void update(JoineryEventSimulator simulator) {
-//        if (mode) updateOneRep(simulator);
-//        else updateMoreReps(simulator);
-//    }
+    @Override
+    public void simStateChanged(Simulation simulation, SimState simState) {
+//        System.out.println("simStateChanged");
+        if (mode) return;
+        else updateMoreReps(simulation);
+    }
+
+    @Override
+    public void refresh(Simulation simulation) {
+        System.out.println("refresh");
+//        if (mode) updateOneRep(simulation);
+        if (mode) return;
+        else updateMoreReps(simulation);
+    }
+
 
 //    private void updateOneRep(JoineryEventSimulator simulator) {
 //        try {
@@ -68,12 +87,12 @@ public class SimulationWorker extends SwingWorker<Void, Double> {
 //        }
 //    }
 //
-//    private void updateMoreReps(JoineryEventSimulator simulator) {
-//        SwingUtilities.invokeLater(() -> {
-//            double rep = simulator.getActualRep();
-//            if ((rep % stepSize == 0 && rep >= reps * skipValue) || isStopped) {
-//                chartManager.updateFullReps(simulator);
-//            }
-//        });
-//    }
+    private void updateMoreReps(Simulation simulator) {
+        SwingUtilities.invokeLater(() -> {
+            double rep = simulator.currentReplication() + 1;
+            if ((rep % stepSize == 0 && rep >= reps * skipValue) || isStopped) {
+                chartManager.updateFullReps((MySimulation) simulator);
+            }
+        });
+    }
 }

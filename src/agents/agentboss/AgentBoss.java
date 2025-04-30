@@ -8,6 +8,8 @@ import simulation.*;
 public class AgentBoss extends OSPABA.Agent
 {
 	private final Stat orderDurationStat = new Stat();
+	private int orderCount;
+	private int orderFinishedCount;
 
 	public AgentBoss(int id, Simulation mySim, Agent parent)
 	{
@@ -21,6 +23,8 @@ public class AgentBoss extends OSPABA.Agent
 		super.prepareReplication();
 		// Setup component for the next replication
 		orderDurationStat.clear();
+		orderCount = 0;
+		orderFinishedCount = 0;
 
 		MyMessage msg = new MyMessage(mySim());
 		msg.setAddressee(((MySimulation)mySim()).surroundAgent());
@@ -43,5 +47,21 @@ public class AgentBoss extends OSPABA.Agent
 
 	public Stat getOrderDurationStat() {
 		return orderDurationStat;
+	}
+
+	public int getOrderCount() {
+		return orderCount;
+	}
+
+	public int getOrderFinishedCount() {
+		return orderFinishedCount;
+	}
+
+	public void addOrder() {
+		orderCount++;
+	}
+
+	public void addFinishedOrder() {
+		orderFinishedCount++;
 	}
 }

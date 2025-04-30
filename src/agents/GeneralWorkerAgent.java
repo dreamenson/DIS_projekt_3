@@ -69,4 +69,8 @@ public class GeneralWorkerAgent extends OSPABA.Agent {
         }
         return sum / workers.size();
     }
+
+    public List<Worker> getWorkers() {
+        return workers;
+    }
 }
