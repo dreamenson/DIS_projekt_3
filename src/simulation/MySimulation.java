@@ -10,6 +10,7 @@ import agents.placeagent.*;
 import agents.agentboss.*;
 import agents.cwagent.*;
 import agents.workeragent.*;
+import logger.LoggerInitializer;
 
 import java.util.Arrays;
 
@@ -38,6 +39,7 @@ public class MySimulation extends OSPABA.Simulation
 	{
 		super.prepareSimulation();
 		// Create global statistics
+		LoggerInitializer.initLogging();
 	}
 
 	@Override
