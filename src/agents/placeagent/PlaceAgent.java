@@ -37,8 +37,8 @@ public class PlaceAgent extends OSPABA.Agent
 
 	private void initPlaces() {
 		int placeCnt = ((MySimulation) mySim()).getPlaceCnt();
-		for (int i = placeCnt; i > 0; i--) {
-			places.add(new Place(i, mySim()));
+		for (int i = 0; i < placeCnt; i++) {
+			places.add(new Place(i+1, mySim()));
 		}
 	}
 
@@ -82,5 +82,9 @@ public class PlaceAgent extends OSPABA.Agent
 			sum += place.getBusyRatio();
 		}
 		return sum / places.size();
+	}
+
+	public List<Place> getPlaces() {
+		return places;
 	}
 }

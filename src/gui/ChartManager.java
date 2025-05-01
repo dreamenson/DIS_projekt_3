@@ -1,6 +1,7 @@
 package gui;
 
 import OSPStat.Stat;
+import entities.place.Place;
 import entities.worker.Worker;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -22,9 +23,10 @@ public class ChartManager {
     private final XYSeries fullSeries;
     private double maxY = Double.MIN_VALUE;
     private double minY = Double.MAX_VALUE;
-    private JLabel replicationLabel1, replicationLabel2;
-    private JTable productionStatsTable, workerStatsTable;
+    private JLabel replicationLabel1, replicationLabel2, replicationLabel5;
+    private JTable productionStatsTable, workerStatsTable, placesStatsTable;
     private JTextArea workerAText, workerCText, workerBText;
+    private JTextArea firstHalfText, secondHalfText;
     private JTextArea unstartedText, varnishText, assemblyText, armourText;
 
     // one rep
@@ -140,7 +142,7 @@ public class ChartManager {
         jPanelFlow.add(panel5);
 
         JPanel workersPanel2 = new JPanel(new BorderLayout());
-        JPanel workerTextPanel2 = new JPanel(new GridLayout(1, 3, 10, 10));
+        JPanel workerTextPanel2 = new JPanel(new GridLayout(1, 3, 5, 10));
         workerAText2 = new JTextArea();
         workerBText2 = new JTextArea();
         workerCText2 = new JTextArea();
@@ -168,6 +170,7 @@ public class ChartManager {
     private void setupMoreRepsPanel() {
         jTabbedPane.removeAll();
 
+        // production
         JPanel productionPanel = new JPanel(new BorderLayout());
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -196,6 +199,7 @@ public class ChartManager {
 
         jTabbedPane.addTab("Production", productionPanel);
 
+        // workers
         JPanel workersPanel = new JPanel(new BorderLayout());
         JPanel topPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -217,7 +221,7 @@ public class ChartManager {
         statsScrollPane2.setPreferredSize(new Dimension(1000, 100));
         workersPanel.add(statsScrollPane2, BorderLayout.CENTER);
 
-        JPanel workerTextPanel = new JPanel(new GridLayout(1, 3, 10, 10));
+        JPanel workerTextPanel = new JPanel(new GridLayout(1, 3, 5, 10));
         workerAText = new JTextArea();
         workerBText = new JTextArea();
         workerCText = new JTextArea();
@@ -237,6 +241,43 @@ public class ChartManager {
         workersPanel.add(workerTextPanel, BorderLayout.SOUTH);
 
         jTabbedPane.addTab("Workers", workersPanel);
+
+        // places
+        JPanel placesPanel = new JPanel(new BorderLayout());
+        JPanel topPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        JLabel replicationLabel4 = new JLabel("Current Replication:");
+        replicationLabel5 = new JLabel("0");
+        topPanel3.add(replicationLabel4);
+        topPanel3.add(replicationLabel5);
+
+        placesPanel.add(topPanel3, BorderLayout.NORTH);
+
+        String[] columnNames3 = {"Work Places Busy Ratio [%]", "Min", "Max", "Mean", "Conf. interval - 95%"};
+        Object[][] data3 = {
+                {"All places", "N/A", "N/A", "N/A", "N/A"}
+        };
+        placesStatsTable = new JTable(new DefaultTableModel(data3, columnNames3));
+        JScrollPane statsScrollPane3 = new JScrollPane(placesStatsTable);
+        statsScrollPane3.setPreferredSize(new Dimension(1000, 100));
+        placesPanel.add(statsScrollPane3, BorderLayout.CENTER);
+
+        JPanel placesTextPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        firstHalfText = new JTextArea();
+        secondHalfText = new JTextArea();
+        firstHalfText.setBorder(BorderFactory.createTitledBorder("1st half"));
+        secondHalfText.setBorder(BorderFactory.createTitledBorder("2nd half"));
+
+        JScrollPane firstHalfScroll = new JScrollPane(firstHalfText);
+        JScrollPane secondHalfScroll = new JScrollPane(secondHalfText);
+
+        placesTextPanel.add(firstHalfScroll);
+        placesTextPanel.add(secondHalfScroll);
+
+        placesTextPanel.setPreferredSize(new Dimension(1000, 510));
+        placesPanel.add(placesTextPanel, BorderLayout.SOUTH);
+
+        jTabbedPane.addTab("Work places", placesPanel);
     }
 
     public void setFullReplicationsChart() {
@@ -284,6 +325,7 @@ public class ChartManager {
         addDataPoint(rep, mean);
         replicationLabel1.setText("" + rep);
         replicationLabel2.setText("" + rep);
+        replicationLabel5.setText("" + rep);
 
         updateStatistics(
                 new Stat[] {
@@ -302,7 +344,14 @@ public class ChartManager {
                 },
                 workerStatsTable
         );
+        updateStatistics(
+                new Stat[] {
+                        simulator.getPlaceBusyRatio()
+                },
+                placesStatsTable
+        );
         updateWorkers(simulator);
+        updatePlaces(simulator);
     }
 
     private void updateStatistics(Stat[] stats, JTable table) {
@@ -338,6 +387,27 @@ public class ChartManager {
         for (Worker worker : workers) {
             Stat stat = worker.getWorkRatioStatistics();
             textArea.append(String.format("%d:  %.4f %%  - %s%n", worker.getIndex(), stat.mean(), formatConfInt(stat.confidenceInterval_95())));
+        }
+        textArea.setCaretPosition(0);
+    }
+
+    private void updatePlaces(MySimulation simulator) {
+        int cnt = simulator.getPlaceCnt();
+        List<Place> places = simulator.placeAgent().getPlaces();
+
+        int mid = (cnt + 1) / 2;
+        List<Place> firstHalf = places.subList(0, mid);
+        List<Place> secondHalf = places.subList(mid, cnt);
+
+        updatePlacesText(firstHalf, firstHalfText);
+        updatePlacesText(secondHalf, secondHalfText);
+    }
+
+    private void updatePlacesText(List<Place> places, JTextArea textArea) {
+        textArea.setText(null);
+        for (Place place : places) {
+            Stat stat = place.getBusyRatioStat();
+            textArea.append(String.format("%d:  %.4f %%  - %s%n", place.getId(), stat.mean(), formatConfInt(stat.confidenceInterval_95())));
         }
         textArea.setCaretPosition(0);
     }

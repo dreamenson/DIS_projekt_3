@@ -86,7 +86,7 @@ public class MySimulation extends OSPABA.Simulation
 		super.simulationFinished();
 
 		System.out.println("\n------------------");
-		System.out.println(workerACnt+"/"+workerBCnt+"/"+workerCCnt+"/"+placeCnt+" reps: "+replicationCount());
+		System.out.println(workerACnt+"/"+workerBCnt+"/"+workerCCnt+"/"+placeCnt+" reps: "+(currentReplication()+1));
 		printStat(orderDuration, "Order duration");
 		printStat(unstartedOrders, "Unstart orders");
 		printStat(aWorkRatio, "A work ratio");

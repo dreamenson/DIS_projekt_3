@@ -1,6 +1,7 @@
 package entities.place;
 
 import OSPABA.Simulation;
+import OSPStat.Stat;
 import OSPStat.WStat;
 import entities.order.Product;
 
@@ -8,6 +9,7 @@ public class Place implements Comparable<Place> {
     private final int id;
     private Product product;
     private final WStat busyRatio;
+    private final Stat busyRatioStat = new Stat();
 
     public Place(int id, Simulation simulation) {
         this.id = id;
@@ -34,6 +36,7 @@ public class Place implements Comparable<Place> {
 
     public void updateAfterReplication() {
         busyRatio.updateAfterReplication();
+        busyRatioStat.addSample(busyRatio.mean());
     }
 
     public void reset() {
@@ -43,6 +46,10 @@ public class Place implements Comparable<Place> {
 
     public double getBusyRatio() {
         return busyRatio.mean();
+    }
+
+    public Stat getBusyRatioStat() {
+        return busyRatioStat;
     }
 
     @Override
