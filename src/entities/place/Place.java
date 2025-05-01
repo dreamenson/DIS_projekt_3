@@ -23,7 +23,7 @@ public class Place implements Comparable<Place> {
     }
 
     public void assignProduct(Product product) {
-        busyRatio.addSample(1);
+        busyRatio.addSample(100);
         this.product = product;
     }
 

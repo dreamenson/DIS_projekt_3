@@ -206,7 +206,7 @@ public class ChartManager {
 
         workersPanel.add(topPanel2, BorderLayout.NORTH);
 
-        String[] columnNames2 = {"Workers Group Work Ratio <0,1>", "Min", "Max", "Mean", "Conf. interval - 95%"};
+        String[] columnNames2 = {"Workers Group Work Ratio [%]", "Min", "Max", "Mean", "Conf. interval - 95%"};
         Object[][] data2 = {
                 {"Workers A", "N/A", "N/A", "N/A", "N/A"},
                 {"Workers B", "N/A", "N/A", "N/A", "N/A"},
@@ -337,7 +337,7 @@ public class ChartManager {
         textArea.setText(null);
         for (Worker worker : workers) {
             Stat stat = worker.getWorkRatioStatistics();
-            textArea.append(String.format("%d:  %.4f  - %s%n", worker.getIndex(), stat.mean(), formatConfInt(stat.confidenceInterval_95())));
+            textArea.append(String.format("%d:  %.4f %%  - %s%n", worker.getIndex(), stat.mean(), formatConfInt(stat.confidenceInterval_95())));
         }
         textArea.setCaretPosition(0);
     }

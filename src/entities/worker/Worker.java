@@ -25,7 +25,7 @@ public class Worker {
     }
 
     public void setBusy(Product product, Activity activity) {
-        addValueToStatistic(1);
+        addValueToStatistic(100);
         isFree = false;
         this.product = product;
         this.activity = activity;
