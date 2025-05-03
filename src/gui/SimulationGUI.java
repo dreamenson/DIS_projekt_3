@@ -2,11 +2,12 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class SimulationGUI {
     private final JFrame frame;
     private final JTextField workersAInput, workersBInput, workersCInput, placeCntInput;
-    private final JTextField replicationsInput, stepSizeInput, skipValueInput;
+    private final JTextField replicationsInput, stepSizeInput, skipValueInput, randomSeedInput;
     private final JButton startButton, pauseButton, stopButton;
     private final JSlider speedSlider;
     private ChartManager chartManager;
@@ -26,9 +27,10 @@ public class SimulationGUI {
         workersBInput = new JTextField("5", 5);
         workersCInput = new JTextField("38", 5);
         placeCntInput = new JTextField("57", 5);
-        replicationsInput = new JTextField("500", 5);
+        replicationsInput = new JTextField("1", 5);
         stepSizeInput = new JTextField("2", 5);
         skipValueInput = new JTextField("0.3", 5);
+        randomSeedInput = new JTextField("", 5);
         controlPanel.add(new JLabel("Workers A:")); controlPanel.add(workersAInput);
         controlPanel.add(new JLabel("Replications:")); controlPanel.add(replicationsInput);
         controlPanel.add(new JLabel("Workers B:")); controlPanel.add(workersBInput);
@@ -36,6 +38,7 @@ public class SimulationGUI {
         controlPanel.add(new JLabel("Workers C:")); controlPanel.add(workersCInput);
         controlPanel.add(new JLabel("Skip Value:")); controlPanel.add(skipValueInput);
         controlPanel.add(new JLabel("Place count:")); controlPanel.add(placeCntInput);
+        controlPanel.add(new JLabel("Random seed:")); controlPanel.add(randomSeedInput);
 
         // Button Panel
         JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -44,7 +47,7 @@ public class SimulationGUI {
         pauseButton.setEnabled(false);
         stopButton = new JButton("Stop");
         stopButton.setEnabled(false);
-        speedSlider = new JSlider(JSlider.HORIZONTAL, 0, 10, 5);
+        speedSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
         buttonPanel.add(startButton);
         buttonPanel.add(pauseButton);
         buttonPanel.add(stopButton);
@@ -75,6 +78,8 @@ public class SimulationGUI {
         int reps = Integer.parseInt(replicationsInput.getText());
         int stepSize = Integer.parseInt(stepSizeInput.getText());
         double skipValue = Double.parseDouble(skipValueInput.getText());
+        String seedText = randomSeedInput.getText();
+        long seed = Objects.equals(seedText, "") ? 0 : Long.parseLong(seedText);
         int workersA = Integer.parseInt(workersAInput.getText());
         int workersB = Integer.parseInt(workersBInput.getText());
         int workersC = Integer.parseInt(workersCInput.getText());
@@ -84,7 +89,7 @@ public class SimulationGUI {
         stopButton.setEnabled(true);
         pauseButton.setEnabled(true);
 
-        simulationWorker = new SimulationWorker(reps, stepSize, skipValue, workersA, workersB, workersC, placeCnt,chartManager) {
+        simulationWorker = new SimulationWorker(reps, stepSize, skipValue, seed, workersA, workersB, workersC, placeCnt, chartManager) {
             @Override
             protected void done() {
                 startButton.setEnabled(true);
@@ -119,7 +124,7 @@ public class SimulationGUI {
 
     private void setSimulationSpeed() {
         if (simulationWorker != null) {
-            int speedValue = (int) (2 * Math.pow(1.77,speedSlider.getMaximum() - speedSlider.getValue()));
+            double speedValue = 1.57 * Math.pow(1507.83, speedSlider.getValue() / 100.0);
             simulationWorker.setSpeed(speedValue);
         }
     }

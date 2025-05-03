@@ -74,4 +74,14 @@ public class Order {
                 "id=" + id +
                 '}';
     }
+
+    public String getDetailString() {
+        StringBuilder res = new StringBuilder(String.format("Order #%d:%n", id));
+        for (Product product : products) {
+            res.append("  ");
+            res.append(product.getDetailString());
+            res.append("\n");
+        }
+        return res.toString();
+    }
 }

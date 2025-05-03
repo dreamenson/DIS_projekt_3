@@ -73,4 +73,8 @@ public class GeneralWorkerAgent extends OSPABA.Agent {
     public List<Worker> getWorkers() {
         return workers;
     }
+
+    public PriorityQueue<MyMessage> getMessages() {
+        return messages;
+    }
 }

@@ -1,6 +1,8 @@
 package gui;
 
 import OSPStat.Stat;
+import entities.order.Order;
+import entities.order.Product;
 import entities.place.Place;
 import entities.worker.Worker;
 import org.jfree.chart.ChartFactory;
@@ -8,12 +10,14 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import simulation.MyMessage;
 import simulation.MySimulation;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class ChartManager {
     private final JTabbedPane jTabbedPane;
@@ -27,7 +31,7 @@ public class ChartManager {
     private JTable productionStatsTable, workerStatsTable, placesStatsTable;
     private JTextArea workerAText, workerCText, workerBText;
     private JTextArea firstHalfText, secondHalfText;
-    private JTextArea unstartedText, varnishText, assemblyText, armourText;
+    private JTextArea unstartedText, aPriorText, bPriorText, cPriorText;
 
     // one rep
     private JLabel simulationTimeLabel, simulationTimeLabel2;
@@ -59,18 +63,18 @@ public class ChartManager {
         // queues
         JPanel fifoPanel = new JPanel(new GridLayout(1, 3, 10, 10));
         unstartedText = new JTextArea();
-        varnishText = new JTextArea();
-        assemblyText = new JTextArea();
-        armourText = new JTextArea();
-        unstartedText.setBorder(BorderFactory.createTitledBorder("Unstarted orders FIFO"));
-        varnishText.setBorder(BorderFactory.createTitledBorder("Varnishing FIFO"));
-        assemblyText.setBorder(BorderFactory.createTitledBorder("Assembly FIFO"));
-        armourText.setBorder(BorderFactory.createTitledBorder("Armour FIFO"));
+        aPriorText = new JTextArea();
+        bPriorText = new JTextArea();
+        cPriorText = new JTextArea();
+        unstartedText.setBorder(BorderFactory.createTitledBorder("Unstarted orders List"));
+        aPriorText.setBorder(BorderFactory.createTitledBorder("A prior front"));
+        bPriorText.setBorder(BorderFactory.createTitledBorder("B prior front"));
+        cPriorText.setBorder(BorderFactory.createTitledBorder("C prior front"));
 
         JScrollPane unstartedScroll = new JScrollPane(unstartedText);
-        JScrollPane varnishScroll = new JScrollPane(varnishText);
-        JScrollPane assemblyScroll = new JScrollPane(assemblyText);
-        JScrollPane armourScroll = new JScrollPane(armourText);
+        JScrollPane varnishScroll = new JScrollPane(aPriorText);
+        JScrollPane assemblyScroll = new JScrollPane(bPriorText);
+        JScrollPane armourScroll = new JScrollPane(cPriorText);
 
         fifoPanel.add(unstartedScroll);
         fifoPanel.add(varnishScroll);
@@ -114,28 +118,28 @@ public class ChartManager {
         jPanelFlow.add(topPanel2);
 
         JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel orderCountPanel = new JLabel("Order count:");
+        JLabel orderCountPanel = new JLabel("Order count [#]:");
         orderCountLabel = new JLabel("0");
         panel2.add(orderCountPanel);
         panel2.add(orderCountLabel);
         jPanelFlow.add(panel2);
 
         JPanel panel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel finishedCountPanel = new JLabel("Order finished:");
+        JLabel finishedCountPanel = new JLabel("Order finished [#]:");
         finishedCountLabel = new JLabel("0");
         panel3.add(finishedCountPanel);
         panel3.add(finishedCountLabel);
         jPanelFlow.add(panel3);
 
         JPanel panel4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel unstartedOrdersPanel = new JLabel("Unstarted orders mean:");
+        JLabel unstartedOrdersPanel = new JLabel("Unstarted orders [qty] mean:");
         unstartedOrdersLabel = new JLabel("0");
         panel4.add(unstartedOrdersPanel);
         panel4.add(unstartedOrdersLabel);
         jPanelFlow.add(panel4);
 
         JPanel panel5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel durationPanel = new JLabel("Order production time mean:");
+        JLabel durationPanel = new JLabel("Order production time [h] mean:");
         durationLabel = new JLabel("0");
         panel5.add(durationPanel);
         panel5.add(durationLabel);
@@ -411,77 +415,87 @@ public class ChartManager {
         }
         textArea.setCaretPosition(0);
     }
-//
-//    public void updateOneRep(JoineryEventSimulator simulator) {
-//        String text = parseTime(simulator.getCurrentTime());
-//        simulationTimeLabel.setText(text);
-//        simulationTimeLabel2.setText(text);
-//        updateWorkersJobs(simulator);
-//        updateFIFOs(simulator);
-//        updateWorkersWorkRatio(simulator);
-//        updateStats(simulator);
-//    }
-//
-//    private void updateStats(JoineryEventSimulator simulator) {
-//        orderCountLabel.setText(String.format("%d", simulator.getOrderCount()));
-//        finishedCountLabel.setText(String.format("%d", simulator.getProductionCount()));
-//        unstartedOrdersLabel.setText(String.format("%.4f", simulator.getNewOrdersFIFORepStatistics().getMean()));
-//        durationLabel.setText(String.format("%.4f", simulator.getOrderCompletionDurationRepStatistics().getMean()));
-//    }
-//
-//    private void updateWorkersWorkRatio(JoineryEventSimulator simulator) {
-//        updateWorkerWorkRatio(simulator.getWorkersAList(), workerAText2);
-//        updateWorkerWorkRatio(simulator.getWorkersBList(), workerBText2);
-//        updateWorkerWorkRatio(simulator.getWorkersCList(), workerCText2);
-//    }
-//
-//    private void updateWorkerWorkRatio(List<Worker> workers, JTextArea textArea) {
-//        textArea.setText(null);
-//        for (Worker worker : workers) {
-//            textArea.append(String.format("%d: actual mean %.4f%n", worker.getIndex(), worker.getWorkRatio()));
-//        }
-//        textArea.setCaretPosition(0);
-//    }
-//
-//    private void updateFIFOs(JoineryEventSimulator simulator) {
-//        updateFIFO(simulator.getNewOrdersFIFO(), unstartedText);
-//        updateFIFO(simulator.getVarnishingFIFO(), varnishText);
-//        updateFIFO(simulator.getAssemblyFIFO(), assemblyText);
-//        updateFIFO(simulator.getArmourFIFO(), armourText);
-//    }
-//
-//    private void updateFIFO(Queue<Product> products, JTextArea textArea) {
-//        textArea.setText(null);
-//        textArea.append(String.format("Size = %d%n -- HEAD --%n", products.size()));
-//        for (Product product : products) {
-//            textArea.append(parseProduct(product) + "\n");
-//        }
-//        textArea.setCaretPosition(0);
-//    }
-//
-//    private void updateWorkersJobs(JoineryEventSimulator simulator) {
-//        updateWorkerJobText(simulator.getWorkersAList(), workerAText);
-//        updateWorkerJobText(simulator.getWorkersBList(), workerBText);
-//        updateWorkerJobText(simulator.getWorkersCList(), workerCText);
-//    }
-//
-//    private void updateWorkerJobText(List<Worker> workers, JTextArea textArea) {
-//        textArea.setText(null);
-//        for (Worker worker : workers) {
-//            if (worker.isFree()) {
-//                textArea.append(String.format("%d:   -- free --%n", worker.getIndex()));
-//            } else {
-//                textArea.append(String.format("%d: %s %s%n", worker.getIndex(),
-//                        worker.getActivity().toString().toLowerCase(), parseProduct(worker.getProduct())));
-//            }
-//        }
-//        textArea.setCaretPosition(0);
-//    }
-//
-//    private static String parseProduct(Product product) {
-//        return String.format("#%d-%s on WP %d", product.getId(), product.getType().name(),
-//                product.getPlace() == null ? null : product.getPlace().getId());
-//    }
+
+    public void updateOneRep(MySimulation simulator) {
+        String text = parseTime(simulator.currentTime());
+        simulationTimeLabel.setText(text);
+        simulationTimeLabel2.setText(text);
+        updateWorkersJobs(simulator);
+        updatePriorQueues(simulator);
+        updateOrderList(simulator);
+        updateWorkersWorkRatio(simulator);
+        updateStats(simulator);
+    }
+
+    private void updateOrderList(MySimulation simulation) {
+        List<Order> orders = simulation.carpentryAgent().getUnstartedOrders();
+        unstartedText.setText(null);
+        unstartedText.append(String.format("Size = %d%n", orders.size()));
+        for (Order order : orders) {
+            unstartedText.append(order.getDetailString());
+        }
+        unstartedText.setCaretPosition(0);
+    }
+
+    private void updateStats(MySimulation simulator) {
+        orderCountLabel.setText(String.format("%d", simulator.agentBoss().getOrderCount()));
+        finishedCountLabel.setText(String.format("%d", simulator.agentBoss().getOrderFinishedCount()));
+        unstartedOrdersLabel.setText(String.format("%.4f", simulator.carpentryAgent().getUnstartedOrdersWStat().mean()));
+        durationLabel.setText(String.format("%.4f", simulator.agentBoss().getOrderDurationStat().mean()));
+    }
+
+    private void updateWorkersWorkRatio(MySimulation simulator) {
+        updateWorkerWorkRatio(simulator.aWAgent().getWorkers(), workerAText2);
+        updateWorkerWorkRatio(simulator.bWAgent().getWorkers(), workerBText2);
+        updateWorkerWorkRatio(simulator.cWAgent().getWorkers(), workerCText2);
+    }
+
+    private void updateWorkerWorkRatio(List<Worker> workers, JTextArea textArea) {
+        textArea.setText(null);
+        for (Worker worker : workers) {
+            textArea.append(String.format("%d: mean %.4f %%%n", worker.getIndex(), worker.getWorkRatio()));
+        }
+        textArea.setCaretPosition(0);
+    }
+
+    private void updatePriorQueues(MySimulation simulator) {
+        updatePriorQueue(simulator.aWAgent().getMessages(), aPriorText);
+        updatePriorQueue(simulator.bWAgent().getMessages(), bPriorText);
+        updatePriorQueue(simulator.cWAgent().getMessages(), cPriorText);
+    }
+
+    private void updatePriorQueue(PriorityQueue<MyMessage> messages, JTextArea textArea) {
+        textArea.setText(null);
+        textArea.append(String.format("Size = %d%n -- HEAD --%n", messages.size()));
+        for (MyMessage msg : messages) {
+            textArea.append(parseProduct(msg.getProduct()) + "\n");
+        }
+        textArea.setCaretPosition(0);
+    }
+
+    private void updateWorkersJobs(MySimulation simulator) {
+        updateWorkerJobText(simulator.aWAgent().getWorkers(), workerAText);
+        updateWorkerJobText(simulator.bWAgent().getWorkers(), workerBText);
+        updateWorkerJobText(simulator.cWAgent().getWorkers(), workerCText);
+    }
+
+    private void updateWorkerJobText(List<Worker> workers, JTextArea textArea) {
+        textArea.setText(null);
+        for (Worker worker : workers) {
+            if (worker.isFree()) {
+                textArea.append(String.format("%d:   -- free -- on WP %d%n", worker.getIndex(), worker.getPlace().getId()));
+            } else {
+                textArea.append(String.format("%d: %s %s%n", worker.getIndex(),
+                        worker.getActivity().toString().toLowerCase(), parseProduct(worker.getProduct())));
+            }
+        }
+        textArea.setCaretPosition(0);
+    }
+
+    private static String parseProduct(Product product) {
+        return String.format("#%d_%d-%s on WP %d", product.getOrder().getId(), product.getId(), product.getType().name(),
+                product.getPlace() == null ? null : product.getPlace().getId());
+    }
 
     public static String parseTime(double time) {
         int workDaySeconds = 8*60*60;

@@ -52,6 +52,10 @@ public class Product {
         return needVarnishing;
     }
 
+    public Order getOrder() {
+        return order;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -62,5 +66,13 @@ public class Product {
                 ", id=" + id +
                 ", needVarnishing=" + needVarnishing +
                 '}';
+    }
+
+    public String getDetailString() {
+        StringBuilder res = new StringBuilder(String.format("%d-%s ", id, type.name()));
+        if (needVarnishing) {
+            res.append(" need varnish");
+        }
+        return res.toString();
     }
 }

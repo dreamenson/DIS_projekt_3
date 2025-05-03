@@ -6,19 +6,22 @@ import OSPABA.Simulation;
 import simulation.MySimulation;
 
 import javax.swing.*;
+import java.lang.reflect.InvocationTargetException;
 
 public class SimulationWorker extends SwingWorker<Void, Double> implements ISimDelegate {
     private final int reps, stepSize;
     private final int workersA, workersB, workersC, placeCnt;
     private final double skipValue;
+    private final long seed;
     private final ChartManager chartManager;
-    private boolean mode, isStopped;
+    private boolean slowMode, isStopped;
     private MySimulation simulation;
 
-    public SimulationWorker(int reps, int stepSize, double skipValue, int workersA, int workersB, int workersC, int placeCnt,ChartManager chartManager) {
+    public SimulationWorker(int reps, int stepSize, double skipValue, long seed, int workersA, int workersB, int workersC, int placeCnt,ChartManager chartManager) {
         this.reps = reps;
         this.stepSize = stepSize;
         this.skipValue = skipValue;
+        this.seed = seed;
         this.workersA = workersA;
         this.workersB = workersB;
         this.workersC = workersC;
@@ -28,16 +31,17 @@ public class SimulationWorker extends SwingWorker<Void, Double> implements ISimD
 
     @Override
     protected Void doInBackground() {
-        mode = (reps == 1);
+        slowMode = (reps == 1);
         isStopped = false;
         chartManager.clear();
 
-        if (mode) chartManager.setSingleReplicationChart();
+        if (slowMode) chartManager.setSingleReplicationChart();
         else chartManager.setFullReplicationsChart();
 
         try {
-            simulation = new MySimulation(workersA, workersB, workersC, placeCnt);
+            simulation = new MySimulation(workersA, workersB, workersC, placeCnt, seed);
             simulation.registerDelegate(this);
+            if (slowMode) setSpeed(115.59);
             simulation.simulate(reps);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -58,35 +62,36 @@ public class SimulationWorker extends SwingWorker<Void, Double> implements ISimD
         simulation.resumeSimulation();
     }
 
-    public void setSpeed(int speed) {
-//        simulator.setSpeed(speed);
+    public void setSpeed(double speed) {
+        if (slowMode) {
+            simulation.setSimSpeed(speed, 1e-5);
+        }
     }
 
     @Override
     public void simStateChanged(Simulation simulation, SimState simState) {
-//        System.out.println("simStateChanged");
-        if (mode) return;
-        else updateMoreReps(simulation);
+        if (!slowMode) {
+            updateMoreReps(simulation);
+        }
     }
 
     @Override
     public void refresh(Simulation simulation) {
-        System.out.println("refresh");
-//        if (mode) updateOneRep(simulation);
-        if (mode) return;
-        else updateMoreReps(simulation);
+        if (slowMode) {
+            updateOneRep(simulation);
+        }
     }
 
 
-//    private void updateOneRep(JoineryEventSimulator simulator) {
-//        try {
-//            SwingUtilities.invokeAndWait(() -> chartManager.updateOneRep(simulator));
-//        } catch (InterruptedException | InvocationTargetException e) {
+    private void updateOneRep(Simulation simulator) {
+        try {
+            SwingUtilities.invokeAndWait(() -> chartManager.updateOneRep((MySimulation) simulator));
+        } catch (InterruptedException | InvocationTargetException e) {
 //            e.printStackTrace();
-//            Thread.currentThread().interrupt();
-//        }
-//    }
-//
+            Thread.currentThread().interrupt();
+        }
+    }
+
     private void updateMoreReps(Simulation simulator) {
         SwingUtilities.invokeLater(() -> {
             double rep = simulator.currentReplication() + 1;

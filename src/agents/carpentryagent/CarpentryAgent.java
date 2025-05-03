@@ -54,4 +54,8 @@ public class CarpentryAgent extends OSPABA.Agent
 	public WStat getUnstartedOrdersWStat() {
 		return unstartedOrdersWStat;
 	}
+
+	public List<Order> getUnstartedOrders() {
+		return unstartedOrders;
+	}
 }

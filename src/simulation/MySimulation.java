@@ -11,12 +11,14 @@ import agents.agentboss.*;
 import agents.cwagent.*;
 import agents.workeragent.*;
 import logger.LoggerInitializer;
+import random.RandomCreator;
 
 import java.util.Arrays;
 
 public class MySimulation extends OSPABA.Simulation
 {
 	private final int workerACnt, workerBCnt, workerCCnt, placeCnt;
+	private Long seed = null;
 	private final Stat orderDuration = new Stat();
 	private final Stat unstartedOrders = new Stat();
 	private final Stat orderCount = new Stat();
@@ -27,7 +29,7 @@ public class MySimulation extends OSPABA.Simulation
 	private final Stat cWorkRatio = new Stat();
 	private final Stat placeBusyRatio = new Stat();
 
-	public MySimulation(int workersA, int workersB, int workersC, int places)
+	public MySimulation(int workersA, int workersB, int workersC, int places, long seed)
 	{
 		workerACnt = workersA;
 		workerBCnt = workersB;
@@ -35,6 +37,10 @@ public class MySimulation extends OSPABA.Simulation
 		placeCnt = places;
 		_simEndTime = (double) 249*8*60*60;
 		init();
+		if (seed != 0) {
+			this.seed = seed;
+			RandomCreator.setSeed(seed);
+		}
 	}
 
 	@Override
@@ -42,7 +48,7 @@ public class MySimulation extends OSPABA.Simulation
 	{
 		super.prepareSimulation();
 		// Create global statistics
-		LoggerInitializer.initLogging();
+//		LoggerInitializer.initLogging();
 	}
 
 	@Override
@@ -86,7 +92,8 @@ public class MySimulation extends OSPABA.Simulation
 		super.simulationFinished();
 
 		System.out.println("\n------------------");
-		System.out.println(workerACnt+"/"+workerBCnt+"/"+workerCCnt+"/"+placeCnt+" reps: "+(currentReplication()+1));
+		System.out.println(workerACnt+"/"+workerBCnt+"/"+workerCCnt+"/"+placeCnt+
+				" reps: "+(currentReplication()+1)+" seed: "+seed);
 		printStat(orderDuration, "Order duration");
 		printStat(unstartedOrders, "Unstart orders");
 		printStat(aWorkRatio, "A work ratio");
