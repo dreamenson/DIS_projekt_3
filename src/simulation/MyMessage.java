@@ -43,6 +43,8 @@ public class MyMessage extends OSPABA.MessageForm implements Comparable<MyMessag
 		this.worker = original.worker;
 		this.product = original.product;
 		this.place = original.place;
+		this.nextActivity = original.nextActivity;
+		this.prevTime = original.prevTime;
 	}
 
 	public Worker getWorker() {
