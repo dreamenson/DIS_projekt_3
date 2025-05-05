@@ -2,6 +2,7 @@ package agents.awagent.continualassistants;
 
 import OSPABA.*;
 import agents.awagent.*;
+import agents.workeragent.WorkerAgent;
 import entities.order.Product;
 import entities.order.ProductType;
 import entities.place.Place;
@@ -17,6 +18,7 @@ import OSPABA.Process;
 //meta! id="105"
 public class Cutting extends OSPABA.Process
 {
+	private static IRandomGenerator transferStorageRandom;
 	private static IRandomGenerator tableCuttingRandom;
 	private static final IRandomGenerator chairCuttingRandom =
 			RandomCreator.newContinuousRandom(12*60, 16*60);
@@ -31,6 +33,8 @@ public class Cutting extends OSPABA.Process
 		RandomCreator.addInterval(emp, 10*60, 25*60, 0.6);
 		RandomCreator.addInterval(emp, 25*60, 50*60, 0.4);
 		tableCuttingRandom = emp;
+
+		transferStorageRandom = WorkerAgent.getTransferStorageRandom();
 	}
 
 	@Override
@@ -54,7 +58,9 @@ public class Cutting extends OSPABA.Process
 		product.setPlace(place);
 		msg.setCode(Mc.cutEnd);
 
-		hold(getHoldTime(product), msg);
+		double transferTime = transferStorageRandom.nextValue().doubleValue();
+
+		hold(transferTime + getHoldTime(product), msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

@@ -41,10 +41,10 @@ public class Preparing extends OSPABA.Process
 		msg.setCode(Mc.prepareEnd);
 
 		double time = orderPreparationRandom.nextValue().doubleValue();
-		time += transferStorageRandom.nextValue().doubleValue();
-		time += worker.getPlace() != null ? transferStorageRandom.nextValue().doubleValue() : 0;
+		double transferTime = worker.getPlace() != null ? transferStorageRandom.nextValue().doubleValue() : 0;
+		worker.setPlace(null);
 
-		hold(time, msg);
+		hold(time + transferTime, msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"
