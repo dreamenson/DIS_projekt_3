@@ -1,8 +1,13 @@
 package entities.order;
 
+import OSPABA.Simulation;
+import OSPAnimator.AnimTextItem;
 import entities.place.Place;
+import simulation.Constants;
 
-public class Product {
+import java.awt.*;
+
+public class Product extends AnimTextItem {
     private final ProductType type;
     private final double startTime;
     private double endTime;
@@ -10,13 +15,23 @@ public class Product {
     private Place place = null;
     private final long id;
     private final boolean needVarnishing;
+    private final Simulation simulation;
 
-    public Product(double time, long id, ProductType type, boolean needVarnishing, Order order) {
+    public Product(double time, long id, ProductType type, boolean needVarnishing, Order order, Simulation simulation) {
+        super("", Color.BLACK, Constants.FONT_SMALL);
         startTime = time;
         this.type = type;
         this.needVarnishing = needVarnishing;
         this.id = id;
         this.order = order;
+        this.simulation = simulation;
+        if (simulation.animatorExists()) {
+            setPosition(0,0);
+            String text = "#" + order.getId() + "_"+ id + "-" + type;
+            setZIndex(6);
+            setText(text);
+            simulation.animator().register(this);
+        }
     }
 
     public ProductType getType() {
@@ -25,6 +40,7 @@ public class Product {
 
     public void setPlace(Place place) {
         this.place = place;
+        setPosition(simulation.currentTime(), place.getPosX(), place.getPosY()+15);
         place.assignProduct(this);
     }
 
@@ -38,6 +54,9 @@ public class Product {
 
     public void setEndTime(double endTime) {
         this.endTime = endTime;
+        if (simulation.animatorExists()) {
+            simulation.animator().remove(this);
+        }
     }
 
     public double getEndTime() {

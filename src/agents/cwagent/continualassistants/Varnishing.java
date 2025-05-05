@@ -51,8 +51,10 @@ public class Varnishing extends OSPABA.Process
 
 		worker.setBusy(product, Activity.VARNISHING);
 		msg.setCode(Mc.varnishEnd);
+		double activityTime = getHoldTime(product);
+		worker.setPlace(product.getPlace(), 0, activityTime);
 
-		hold(getHoldTime(product), msg);
+		hold(activityTime, msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

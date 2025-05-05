@@ -19,8 +19,16 @@ public class GeneralWorkerAgent extends OSPABA.Agent {
     }
 
     private void initWorkers(int count, WorkerType type) {
-        for(int i = 0; i < count; ++i) {
-            workers.add(new Worker(type, i + 1, mySim()));
+        if (mySim().animatorExists()) {
+            for(int i = 0; i < count; ++i) {
+                Worker worker = new Worker(type, i + 1, mySim());
+                mySim().animator().register(worker);
+                workers.add(worker);
+            }
+        } else {
+            for(int i = 0; i < count; ++i) {
+                workers.add(new Worker(type, i + 1, mySim()));
+            }
         }
     }
 

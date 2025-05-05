@@ -1,5 +1,6 @@
 package gui;
 
+import OSPABA.Simulation;
 import OSPStat.Stat;
 import entities.order.Order;
 import entities.order.Product;
@@ -8,14 +9,12 @@ import entities.worker.Worker;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.xy.XIntervalDataItem;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import simulation.MyMessage;
 import simulation.MySimulation;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
@@ -149,6 +148,15 @@ public class ChartManager {
         panel.add(new JLabel(text));
         panel.add(label);
         return panel;
+    }
+
+    public void addAnimator(Simulation simulation) {
+        JFrame frame = new JFrame("Animator");
+        frame.setBounds(0, 0, 1400, 900);
+
+        frame.add(simulation.animator().canvas());
+        frame.setVisible(true);
+        frame.setLayout(null);
     }
 
     private void setupMoreRepsPanel() {

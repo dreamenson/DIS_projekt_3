@@ -54,13 +54,14 @@ public class Cutting extends OSPABA.Process
 		Place place = msg.getPlace();
 
 		worker.setBusy(product, Activity.CUTTING);
-		worker.setPlace(place);
 		product.setPlace(place);
 		msg.setCode(Mc.cutEnd);
 
 		double transferTime = transferStorageRandom.nextValue().doubleValue();
+		double activityTime = getHoldTime(product);
+		worker.setPlace(place, transferTime, activityTime);
 
-		hold(transferTime + getHoldTime(product), msg);
+		hold(transferTime + activityTime, msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

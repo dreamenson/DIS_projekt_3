@@ -29,13 +29,16 @@ public class MySimulation extends OSPABA.Simulation
 	private final Stat cWorkRatio = new Stat();
 	private final Stat placeBusyRatio = new Stat();
 
-	public MySimulation(int workersA, int workersB, int workersC, int places, long seed)
+	public MySimulation(int workersA, int workersB, int workersC, int places, long seed, boolean setAnim)
 	{
 		workerACnt = workersA;
 		workerBCnt = workersB;
 		workerCCnt = workersC;
 		placeCnt = places;
 		_simEndTime = (double) 249*8*60*60;
+		if (setAnim) {
+			createAnimator();
+		}
 		init();
 		if (seed != 0) {
 			this.seed = seed;

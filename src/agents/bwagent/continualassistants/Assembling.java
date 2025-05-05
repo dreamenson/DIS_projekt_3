@@ -55,9 +55,10 @@ public class Assembling extends OSPABA.Process
 		} else if (worker.getPlace() != product.getPlace()) {
 			transferTime += transferPlaceRandom.nextValue().doubleValue();
 		}
-		worker.setPlace(product.getPlace());
+		double activityTime = getHoldTime(product);
+		worker.setPlace(product.getPlace(), transferTime, activityTime);
 
-		hold(transferTime + getHoldTime(product), msg);
+		hold(transferTime + activityTime, msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

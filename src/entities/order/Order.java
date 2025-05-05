@@ -22,10 +22,10 @@ public class Order {
     public Order(Simulation sim) {
         this.startTime = sim.currentTime();
         this.id = nextID++;
-        initProducts();
+        initProducts(sim);
     }
 
-    private void initProducts() {
+    private void initProducts(Simulation sim) {
         productCnt = rndCount.nextValue().intValue();
 
         for (int i = 0; i < productCnt; i++) {
@@ -36,7 +36,7 @@ public class Order {
             else type = ProductType.CHAIR;
 
             boolean needVarnish = rndNeedVarnish.nextValue().doubleValue() < 0.15;
-            products.add(new Product(startTime, i + 1, type, needVarnish, this));
+            products.add(new Product(startTime, i + 1, type, needVarnish, this, sim));
         }
     }
 

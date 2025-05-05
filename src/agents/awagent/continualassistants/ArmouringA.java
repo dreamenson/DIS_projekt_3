@@ -49,9 +49,11 @@ public class ArmouringA extends OSPABA.Process
 		} else if (worker.getPlace() != product.getPlace()) {
 			transferTime += transferPlaceRandom.nextValue().doubleValue();
 		}
-		worker.setPlace(product.getPlace());
+		double activityTime = rackArmouringRandom.nextValue().doubleValue();
 
-		hold(transferTime + rackArmouringRandom.nextValue().doubleValue(), msg);
+		worker.setPlace(product.getPlace(), transferTime, activityTime);
+
+		hold(transferTime + activityTime, msg);
 	}
 
 	//meta! userInfo="Process messages defined in code", id="0"

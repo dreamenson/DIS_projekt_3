@@ -1,11 +1,16 @@
 package agents.placeagent;
 
 import OSPABA.*;
+import OSPAnimator.AnimShape;
+import OSPAnimator.AnimShapeItem;
+import OSPAnimator.AnimTextItem;
 import entities.place.Place;
 import entities.worker.Worker;
 import simulation.*;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 
 //meta! id="5"
@@ -37,9 +42,32 @@ public class PlaceAgent extends OSPABA.Agent
 
 	private void initPlaces() {
 		int placeCnt = ((MySimulation) mySim()).getPlaceCnt();
-		for (int i = 0; i < placeCnt; i++) {
-			places.add(new Place(i+1, mySim()));
+
+		if (mySim().animatorExists()) {
+			createWarehouse();
+
+			for (int i = 0; i < placeCnt; i++) {
+				Place place = new Place(i+1, mySim());
+				places.add(place);
+				mySim().animator().register(place);
+			}
+		} else {
+			for (int i = 0; i < placeCnt; i++) {
+				places.add(new Place(i+1, mySim()));
+			}
 		}
+	}
+
+	private void createWarehouse() {
+		AnimShapeItem item = new AnimShapeItem(AnimShape.RECTANGLE, 100, 720);
+		item.setPosition(1200, 50);
+		item.setColor(Color.BLACK);
+		item.setFill(false);
+
+		AnimTextItem text = new AnimTextItem("Warehouse", Color.BLACK, Constants.FONT);
+		text.setPosition(1205, 55);
+		mySim().animator().register(item);
+		mySim().animator().register(text);
 	}
 
 	//meta! userInfo="Generated code: do not modify", tag="begin"

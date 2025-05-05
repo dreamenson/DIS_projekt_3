@@ -42,7 +42,7 @@ public class Preparing extends OSPABA.Process
 
 		double time = orderPreparationRandom.nextValue().doubleValue();
 		double transferTime = worker.getPlace() != null ? transferStorageRandom.nextValue().doubleValue() : 0;
-		worker.setPlace(null);
+		worker.setPlace(null, transferTime, time);
 
 		hold(time + transferTime, msg);
 	}

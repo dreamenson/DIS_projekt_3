@@ -3,6 +3,7 @@ package gui;
 import OSPABA.ISimDelegate;
 import OSPABA.SimState;
 import OSPABA.Simulation;
+import OSPAnimator.Animator;
 import simulation.MySimulation;
 
 import javax.swing.*;
@@ -39,9 +40,15 @@ public class SimulationWorker extends SwingWorker<Void, Double> implements ISimD
         else chartManager.setFullReplicationsChart();
 
         try {
-            simulation = new MySimulation(workersA, workersB, workersC, placeCnt, seed);
+            if (slowMode) {
+                simulation = new MySimulation(workersA, workersB, workersC, placeCnt, seed, true);
+                chartManager.addAnimator(simulation);
+                simulation.animator().setSynchronizedTime(true);
+                setSpeed(115.59);
+            } else {
+                simulation = new MySimulation(workersA, workersB, workersC, placeCnt, seed, false);
+            }
             simulation.registerDelegate(this);
-            if (slowMode) setSpeed(115.59);
             simulation.simulate(reps);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -64,7 +71,8 @@ public class SimulationWorker extends SwingWorker<Void, Double> implements ISimD
 
     public void setSpeed(double speed) {
         if (slowMode) {
-            simulation.setSimSpeed(speed, 1e-5);
+            simulation.setSimSpeed(speed, 0.1);
+            simulation.animator().setSimSpeed(speed, 0.1);
         }
     }
 
