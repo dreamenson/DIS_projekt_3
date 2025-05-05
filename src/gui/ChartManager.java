@@ -8,12 +8,14 @@ import entities.worker.Worker;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.data.xy.XIntervalDataItem;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import simulation.MyMessage;
 import simulation.MySimulation;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
@@ -50,7 +52,8 @@ public class ChartManager {
     private void setupSingleRepPanel() {
         jTabbedPane.removeAll();
 
-        JPanel jPanel = new JPanel(new BorderLayout());
+        JPanel jPanel = new JPanel();
+        jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.Y_AXIS));
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JLabel simulationTimePanel = new JLabel("Simulation time:");
@@ -58,10 +61,11 @@ public class ChartManager {
         topPanel.add(simulationTimePanel);
         topPanel.add(simulationTimeLabel);
 
-        jPanel.add(topPanel, BorderLayout.NORTH);
+        topPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, topPanel.getPreferredSize().height));
+        jPanel.add(topPanel);
 
         // queues
-        JPanel fifoPanel = new JPanel(new GridLayout(1, 3, 10, 10));
+        JPanel fifoPanel = new JPanel(new GridLayout(1, 3, 5, 10));
         unstartedText = new JTextArea();
         aPriorText = new JTextArea();
         bPriorText = new JTextArea();
@@ -81,10 +85,11 @@ public class ChartManager {
         fifoPanel.add(assemblyScroll);
         fifoPanel.add(armourScroll);
 
-        jPanel.add(fifoPanel, BorderLayout.CENTER);
+        fifoPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 400));
+        jPanel.add(fifoPanel);
 
         // workers
-        JPanel workerTextPanel = new JPanel(new GridLayout(1, 3, 10, 10));
+        JPanel workerTextPanel = new JPanel(new GridLayout(1, 3, 5, 10));
         workerAText = new JTextArea();
         workerBText = new JTextArea();
         workerCText = new JTextArea();
@@ -100,52 +105,24 @@ public class ChartManager {
         workerTextPanel.add(workerBScroll);
         workerTextPanel.add(workerCScroll);
 
-        workerTextPanel.setPreferredSize(new Dimension(1000, 350));
-        jPanel.add(workerTextPanel, BorderLayout.SOUTH);
+        jPanel.add(workerTextPanel);
 
-        jTabbedPane.addTab("One rep", jPanel);
+        jTabbedPane.addTab("State", jPanel);
 
         // stats
         JPanel jPanel2 = new JPanel(new BorderLayout());
 
         JPanel jPanelFlow = new JPanel(new GridLayout(0, 1));
-        JPanel topPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        jPanelFlow.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JLabel simulationTimePanel2 = new JLabel("Simulation time:");
-        simulationTimeLabel2 = new JLabel("0");
-        topPanel2.add(simulationTimePanel2);
-        topPanel2.add(simulationTimeLabel2);
-        jPanelFlow.add(topPanel2);
+        jPanelFlow.add(createLabeledPanel("Simulation time:", simulationTimeLabel2 = new JLabel("0")));
+        jPanelFlow.add(createLabeledPanel("Order count [#]:", orderCountLabel = new JLabel("0")));
+        jPanelFlow.add(createLabeledPanel("Order finished [#]:", finishedCountLabel = new JLabel("0")));
+        jPanelFlow.add(createLabeledPanel("Unstarted orders [qty] mean:", unstartedOrdersLabel = new JLabel("0")));
+        jPanelFlow.add(createLabeledPanel("Order production time [h] mean:", durationLabel = new JLabel("0")));
 
-        JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel orderCountPanel = new JLabel("Order count [#]:");
-        orderCountLabel = new JLabel("0");
-        panel2.add(orderCountPanel);
-        panel2.add(orderCountLabel);
-        jPanelFlow.add(panel2);
+        jPanel2.add(jPanelFlow, BorderLayout.NORTH);
 
-        JPanel panel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel finishedCountPanel = new JLabel("Order finished [#]:");
-        finishedCountLabel = new JLabel("0");
-        panel3.add(finishedCountPanel);
-        panel3.add(finishedCountLabel);
-        jPanelFlow.add(panel3);
-
-        JPanel panel4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel unstartedOrdersPanel = new JLabel("Unstarted orders [qty] mean:");
-        unstartedOrdersLabel = new JLabel("0");
-        panel4.add(unstartedOrdersPanel);
-        panel4.add(unstartedOrdersLabel);
-        jPanelFlow.add(panel4);
-
-        JPanel panel5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel durationPanel = new JLabel("Order production time [h] mean:");
-        durationLabel = new JLabel("0");
-        panel5.add(durationPanel);
-        panel5.add(durationLabel);
-        jPanelFlow.add(panel5);
-
-        JPanel workersPanel2 = new JPanel(new BorderLayout());
         JPanel workerTextPanel2 = new JPanel(new GridLayout(1, 3, 5, 10));
         workerAText2 = new JTextArea();
         workerBText2 = new JTextArea();
@@ -162,13 +139,16 @@ public class ChartManager {
         workerTextPanel2.add(workerBScroll2);
         workerTextPanel2.add(workerCScroll2);
 
-        workerTextPanel2.setPreferredSize(new Dimension(1000, 350));
-        workersPanel2.add(workerTextPanel2, BorderLayout.SOUTH);
-
-        jPanel2.add(jPanelFlow, BorderLayout.NORTH);
-        jPanel2.add(workersPanel2, BorderLayout.SOUTH);
+        jPanel2.add(workerTextPanel2, BorderLayout.CENTER);
 
         jTabbedPane.addTab("Stats", jPanel2);
+    }
+
+    private JPanel createLabeledPanel(String text, JLabel label) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.add(new JLabel(text));
+        panel.add(label);
+        return panel;
     }
 
     private void setupMoreRepsPanel() {
@@ -205,14 +185,16 @@ public class ChartManager {
 
         // workers
         JPanel workersPanel = new JPanel(new BorderLayout());
-        JPanel topPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel topContainer = new JPanel();
+        topContainer.setLayout(new BoxLayout(topContainer, BoxLayout.Y_AXIS));
 
+        JPanel topPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel replicationLabel3 = new JLabel("Current Replication:");
         replicationLabel2 = new JLabel("0");
         topPanel2.add(replicationLabel3);
         topPanel2.add(replicationLabel2);
 
-        workersPanel.add(topPanel2, BorderLayout.NORTH);
+        topContainer.add(topPanel2);
 
         String[] columnNames2 = {"Workers Group Work Ratio [%]", "Min", "Max", "Mean", "Conf. interval - 95%"};
         Object[][] data2 = {
@@ -222,8 +204,10 @@ public class ChartManager {
         };
         workerStatsTable = new JTable(new DefaultTableModel(data2, columnNames2));
         JScrollPane statsScrollPane2 = new JScrollPane(workerStatsTable);
-        statsScrollPane2.setPreferredSize(new Dimension(1000, 100));
-        workersPanel.add(statsScrollPane2, BorderLayout.CENTER);
+        statsScrollPane2.setPreferredSize(new Dimension(10, 75));
+        topContainer.add(statsScrollPane2);
+
+        workersPanel.add(topContainer, BorderLayout.NORTH);
 
         JPanel workerTextPanel = new JPanel(new GridLayout(1, 3, 5, 10));
         workerAText = new JTextArea();
@@ -241,13 +225,15 @@ public class ChartManager {
         workerTextPanel.add(workerBScroll);
         workerTextPanel.add(workerCScroll);
 
-        workerTextPanel.setPreferredSize(new Dimension(1000, 480));
-        workersPanel.add(workerTextPanel, BorderLayout.SOUTH);
+        workersPanel.add(workerTextPanel, BorderLayout.CENTER);
 
         jTabbedPane.addTab("Workers", workersPanel);
 
         // places
         JPanel placesPanel = new JPanel(new BorderLayout());
+        JPanel topContainer2 = new JPanel();
+        topContainer2.setLayout(new BoxLayout(topContainer2, BoxLayout.Y_AXIS));
+
         JPanel topPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JLabel replicationLabel4 = new JLabel("Current Replication:");
@@ -255,7 +241,7 @@ public class ChartManager {
         topPanel3.add(replicationLabel4);
         topPanel3.add(replicationLabel5);
 
-        placesPanel.add(topPanel3, BorderLayout.NORTH);
+        topContainer2.add(topPanel3);
 
         String[] columnNames3 = {"Work Places Busy Ratio [%]", "Min", "Max", "Mean", "Conf. interval - 95%"};
         Object[][] data3 = {
@@ -263,10 +249,12 @@ public class ChartManager {
         };
         placesStatsTable = new JTable(new DefaultTableModel(data3, columnNames3));
         JScrollPane statsScrollPane3 = new JScrollPane(placesStatsTable);
-        statsScrollPane3.setPreferredSize(new Dimension(1000, 100));
-        placesPanel.add(statsScrollPane3, BorderLayout.CENTER);
+        statsScrollPane3.setPreferredSize(new Dimension(10, 45));
+        topContainer2.add(statsScrollPane3);
 
-        JPanel placesTextPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        placesPanel.add(topContainer2, BorderLayout.NORTH);
+
+        JPanel placesTextPanel = new JPanel(new GridLayout(1, 2, 5, 10));
         firstHalfText = new JTextArea();
         secondHalfText = new JTextArea();
         firstHalfText.setBorder(BorderFactory.createTitledBorder("1st half"));
@@ -278,8 +266,7 @@ public class ChartManager {
         placesTextPanel.add(firstHalfScroll);
         placesTextPanel.add(secondHalfScroll);
 
-        placesTextPanel.setPreferredSize(new Dimension(1000, 510));
-        placesPanel.add(placesTextPanel, BorderLayout.SOUTH);
+        placesPanel.add(placesTextPanel, BorderLayout.CENTER);
 
         jTabbedPane.addTab("Work places", placesPanel);
     }
