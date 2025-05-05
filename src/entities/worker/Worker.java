@@ -96,6 +96,13 @@ public class Worker extends AnimShapeItem {
         this.place = place;
         moveToPlace(transferTime);
         makeActivityText(transferTime, activityTime);
+        moveProduct(transferTime, activityTime);
+    }
+
+    private void moveProduct(double transferTime, double activityTime) {
+        if (simulation.animatorExists() && activity == Activity.PREPARING) {
+            product.setPosition(simulation.currentTime() + transferTime, START_X, START_Y+index*50-25);
+        }
     }
 
     private void makeActivityText(double start, double duration) {
