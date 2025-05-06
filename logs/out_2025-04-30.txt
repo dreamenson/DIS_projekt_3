@@ -1,3 +1,7 @@
+C:\Program Files\Java\jdk-24\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3.4\lib\idea_rt.jar=60194"
+-Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath
+"C:\Users\vilia\IdeaProjects\DISS\projekt_3\out\production\projekt_3;D:\Viliam\uniza\DIS\ABACore_4.0\ABACore\ABACore.jar;
+C:\Program Files\Java\jfreechart-1.5.2\target\jfreechart-1.5.2.jar" Main
 
 ------------------
 6/5/38/57 reps: 500
