@@ -101,7 +101,7 @@ public class Worker extends AnimShapeItem {
 
     private void moveProduct(double transferTime, double activityTime) {
         if (simulation.animatorExists() && activity == Activity.PREPARING) {
-            product.setPosition(simulation.currentTime() + transferTime, START_X, START_Y+index*50-25);
+            product.moveTo(simulation.currentTime(), transferTime, START_X, START_Y+index*50-25);
         }
     }
 
@@ -126,6 +126,9 @@ public class Worker extends AnimShapeItem {
             } else {
                 moveTo(simulation.currentTime(), duration, place.getPosX() + 25, place.getPosY() + 50);
                 text.moveTo(simulation.currentTime(), duration, place.getPosX() + 27, place.getPosY() + 52);
+                if (activity == Activity.CUTTING) {
+                    product.moveTo(simulation.currentTime(), duration, place.getPosX(), place.getPosY() + 25);
+                }
             }
         }
     }

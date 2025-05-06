@@ -26,7 +26,7 @@ public class Product extends AnimTextItem {
         this.order = order;
         this.simulation = simulation;
         if (simulation.animatorExists()) {
-            setPosition(0,0);
+            setPosition(1310, 20 + (order.getId() % 13) * 60 + id * 12);
             String text = "#" + order.getId() + "_"+ id + "-" + type;
             setZIndex(6);
             setText(text);
@@ -40,7 +40,6 @@ public class Product extends AnimTextItem {
 
     public void setPlace(Place place) {
         this.place = place;
-        setPosition(simulation.currentTime(), place.getPosX(), place.getPosY()+15);
         place.assignProduct(this);
     }
 
