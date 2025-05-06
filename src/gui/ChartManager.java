@@ -153,6 +153,7 @@ public class ChartManager {
     public void addAnimator(Simulation simulation) {
         JFrame frame = new JFrame("Animator");
         frame.setBounds(0, 0, 1400, 900);
+        simulation.animator().canvas().setBounds(0,0,1400,900);
 
         frame.add(simulation.animator().canvas());
         frame.setVisible(true);
