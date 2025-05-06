@@ -51,7 +51,7 @@ public class MySimulation extends OSPABA.Simulation
 	{
 		super.prepareSimulation();
 		// Create global statistics
-//		LoggerInitializer.initLogging();
+		LoggerInitializer.initLogging();
 	}
 
 	@Override
