@@ -28,7 +28,7 @@ public class Product extends AnimTextItem {
         if (simulation.animatorExists()) {
             setPosition(1310, 20 + (order.getId() % 13) * 60 + id * 12);
             String text = "#" + order.getId() + "_"+ id + "-" + type;
-            setZIndex(6);
+            setZIndex(10);
             setText(text);
             simulation.animator().register(this);
         }

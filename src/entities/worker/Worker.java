@@ -16,6 +16,7 @@ public class Worker extends AnimShapeItem {
     private static final int START_X = 1205;
     private static final int START_Y = 120;
     private AnimTextItem text, activityText;
+    private AnimShapeItem bar, barWhite;
     private final WorkerType type;
     private final int index;
     private boolean isFree = true;
@@ -36,9 +37,10 @@ public class Worker extends AnimShapeItem {
         this.simulation = simulation;
         if (simulation.animatorExists()) {
             setPosition(START_X, START_Y);
-            setZIndex(2);
+            setZIndex(20);
             setColor(Color.GREEN);
             createText();
+            createProgressBar();
         }
     }
 
@@ -46,13 +48,28 @@ public class Worker extends AnimShapeItem {
         String str = type + String.valueOf(index);
         text = new AnimTextItem(str, Color.BLACK, Constants.FONT_SMALL);
         text.setPosition(START_X+2, START_Y+2);
-        text.setZIndex(3);
+        text.setZIndex(25);
         simulation.animator().register(text);
 
         activityText = new AnimTextItem("pes", Color.BLACK, Constants.FONT_SMALL);
         activityText.setPosition(posX - 20, posY - 20);
-        activityText.setZIndex(5);
+        activityText.setZIndex(8);
         simulation.animator().register(activityText);
+    }
+
+    private void createProgressBar() {
+        bar = new AnimShapeItem(AnimShape.RECTANGLE, 60, 5);
+        bar.setColor(Color.DARK_GRAY);
+        bar.setPosition(55,45);
+        bar.setZIndex(1);
+        bar.setVisible(false);
+        simulation.animator().register(bar);
+
+        barWhite = new AnimShapeItem(AnimShape.RECTANGLE, 60, 5);
+        barWhite.setColor(Color.WHITE);
+        barWhite.setPosition(55,45);
+        barWhite.setZIndex(2);
+        simulation.animator().register(barWhite);
     }
 
     public void setBusy(Product product, Activity activity) {
@@ -97,6 +114,28 @@ public class Worker extends AnimShapeItem {
         moveToPlace(transferTime);
         makeActivityText(transferTime, activityTime);
         moveProduct(transferTime, activityTime);
+        animateProgressBar(transferTime, activityTime);
+    }
+
+    private void animateProgressBar(double transferTime, double activityTime) {
+        if (simulation.animatorExists()) {
+            double eps = 1e-6;
+            bar.setVisible(simulation.currentTime() + transferTime, true);
+            bar.setVisible(simulation.currentTime() + transferTime + activityTime, false);
+            if (activity ==Activity.PREPARING) {
+                bar.setPosition(simulation.currentTime() + transferTime - eps, START_X, START_Y + index * 50 - 30);
+                barWhite.setPosition(simulation.currentTime() + transferTime - eps, START_X, START_Y + index * 50 - 30);
+            } else {
+                if (place.getId() % 2 == 1) {
+                    bar.setPosition(simulation.currentTime() + transferTime, place.getPosX() + 5, place.getPosY() + 20);
+                    barWhite.setPosition(simulation.currentTime() + transferTime, place.getPosX() + 5, place.getPosY() + 20);
+                } else {
+                    bar.setPosition(simulation.currentTime() + transferTime, place.getPosX() + 5, place.getPosY() + 15);
+                    barWhite.setPosition(simulation.currentTime() + transferTime, place.getPosX() + 5, place.getPosY() + 15);
+                }
+            }
+            barWhite.move(simulation.currentTime() + transferTime, activityTime - eps, 60, 0);
+        }
     }
 
     private void moveProduct(double transferTime, double activityTime) {

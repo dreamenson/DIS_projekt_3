@@ -62,6 +62,7 @@ public class PlaceAgent extends OSPABA.Agent
 		AnimShapeItem item = new AnimShapeItem(AnimShape.RECTANGLE, 100, 720);
 		item.setPosition(1200, 50);
 		item.setColor(Color.BLACK);
+		item.setZIndex(5);
 		item.setFill(false);
 
 		AnimTextItem text = new AnimTextItem("Warehouse", Color.BLACK, Constants.FONT);

@@ -7,6 +7,8 @@ import entities.place.Place;
 import entities.worker.Activity;
 import entities.worker.Worker;
 
+import java.awt.*;
+
 public class MyMessage extends OSPABA.MessageForm implements Comparable<MyMessage>
 {
 	private Order order;
@@ -85,6 +87,9 @@ public class MyMessage extends OSPABA.MessageForm implements Comparable<MyMessag
 
 	public void setPlace(Place place) {
 		this.place = place;
+		if (mySim().animatorExists()) {
+			place.setColor(Color.RED);
+		}
 	}
 
 	public void setNextActivity(Activity nextActivity) {

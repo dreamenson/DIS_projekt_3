@@ -25,7 +25,7 @@ public class Place extends AnimShapeItem implements Comparable<Place> {
         busyRatio = new WStat(simulation);
         if (simulation.animatorExists()) {
             setPosition(getStartX(), getStartY());
-            setZIndex(1);
+            setZIndex(5);
             setColor(Color.GREEN);
             setFill(false);
             createText();
@@ -59,9 +59,6 @@ public class Place extends AnimShapeItem implements Comparable<Place> {
     public void assignProduct(Product product) {
         busyRatio.addSample(100);
         this.product = product;
-        if (simulation.animatorExists()) {
-            setColor(Color.RED);
-        }
     }
 
     public void release() {
