@@ -3,12 +3,15 @@ package agents.cwagent;
 import OSPABA.*;
 import entities.worker.Activity;
 import entities.worker.Worker;
+import random.IRandomGenerator;
+import random.RandomCreator;
 import simulation.*;
 
 //meta! id="14"
 public class CWManager extends OSPABA.Manager
 {
-	private AgentComponent mordantingAgent, varnishingAgent, armouringAgent;
+	private AgentComponent mordantingAgent, varnishingAgent, armouringAgent, newProcAgent;
+	private static final IRandomGenerator prob = RandomCreator.newContinuousRandom(0, 1);
 
 	public CWManager(int id, Simulation mySim, Agent myAgent)
 	{
@@ -30,6 +33,7 @@ public class CWManager extends OSPABA.Manager
 		mordantingAgent = myAgent().findAssistant(Id.mordanting);
 		varnishingAgent = myAgent().findAssistant(Id.varnishing);
 		armouringAgent = myAgent().findAssistant(Id.armouringC);
+		newProcAgent = myAgent().findAssistant(Id.newProc);
 	}
 
 	//meta! sender="WorkerAgent", id="73", type="Request"
@@ -89,7 +93,12 @@ public class CWManager extends OSPABA.Manager
 	public void processFinishMordanting(MessageForm message)
 	{
 		MyMessage msg = (MyMessage) message;
-		if (msg.getProduct().isNeedVarnishing()) {
+
+		if (prob.nextValue().doubleValue() < 0.5) {
+			message.setAddressee(newProcAgent);
+			startContinualAssistant(message);
+		}
+		else if (msg.getProduct().isNeedVarnishing()) {
 			message.setAddressee(varnishingAgent);
 			startContinualAssistant(message);
 		} else {
@@ -118,6 +127,18 @@ public class CWManager extends OSPABA.Manager
 		}
 	}
 
+	//meta! sender="NewProc", id="182", type="Finish"
+	public void processFinishNewProc(MessageForm message)
+	{
+		MyMessage msg = (MyMessage) message;
+		if (msg.getProduct().isNeedVarnishing()) {
+			message.setAddressee(varnishingAgent);
+			startContinualAssistant(message);
+		} else {
+			workerFinished(message, Mc.mordantAndVarnish);
+		}
+	}
+
 	//meta! userInfo="Generated code: do not modify", tag="begin"
 	public void init()
 	{
@@ -128,10 +149,6 @@ public class CWManager extends OSPABA.Manager
 	{
 		switch (message.code())
 		{
-		case Mc.mordantAndVarnish:
-			processMordantAndVarnish(message);
-		break;
-
 		case Mc.finish:
 			switch (message.sender().id())
 			{
@@ -139,18 +156,26 @@ public class CWManager extends OSPABA.Manager
 				processFinishMordanting(message);
 			break;
 
-			case Id.armouringC:
-				processFinishArmouringC(message);
+			case Id.newProc:
+				processFinishNewProc(message);
 			break;
 
 			case Id.varnishing:
 				processFinishVarnishing(message);
+			break;
+
+			case Id.armouringC:
+				processFinishArmouringC(message);
 			break;
 			}
 		break;
 
 		case Mc.armourC:
 			processArmourC(message);
+		break;
+
+		case Mc.mordantAndVarnish:
+			processMordantAndVarnish(message);
 		break;
 
 		default:

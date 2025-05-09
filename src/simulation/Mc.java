@@ -28,4 +28,5 @@ public class Mc extends OSPABA.IdList
 	public static final int assemblyEnd = 6;
 	public static final int armourCEnd = 7;
 	public static final int armourAEnd = 8;
+	public static final int newProcEnd = 9;
 }

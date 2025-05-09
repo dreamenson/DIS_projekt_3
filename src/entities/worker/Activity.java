@@ -6,5 +6,6 @@ public enum Activity {
     MORDANTING,
     VARNISHING,
     ARMOURING,
-    ASSEMBLING
+    ASSEMBLING,
+    NEW_ACTIVITY
 }

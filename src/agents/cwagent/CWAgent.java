@@ -23,6 +23,7 @@ public class CWAgent extends GeneralWorkerAgent
 		new Varnishing(Id.varnishing, mySim(), this);
 		new ArmouringC(Id.armouringC, mySim(), this);
 		new Mordanting(Id.mordanting, mySim(), this);
+		new NewProc(Id.newProc, mySim(), this);
 		addOwnMessage(Mc.mordantAndVarnish);
 		addOwnMessage(Mc.armourC);
 	}
@@ -32,5 +33,6 @@ public class CWAgent extends GeneralWorkerAgent
 		addOwnMessage(Mc.mordantEnd);
 		addOwnMessage(Mc.varnishEnd);
 		addOwnMessage(Mc.armourCEnd);
+		addOwnMessage(Mc.newProcEnd);
 	}
 }
